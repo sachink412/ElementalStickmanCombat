@@ -1,0 +1,22 @@
+{
+    "HumanoidRootPart": {
+        "size": [
+            5,
+            5
+        ],
+        "partType": "Oval"
+    },
+    "LowerTorso": {},
+    "UpperTorso": {},
+    "Head": {
+        "partType": "Oval"
+    },
+    "UpperRightArm": {},
+    "UpperLeftArm": {},
+    "LowerLeftArm": {},
+    "LowerRightArm": {},
+    "UpperRightLeg": {},
+    "UpperLeftLeg": {},
+    "LowerRightLeg": {},
+    "LowerLeftLeg": {}
+}
