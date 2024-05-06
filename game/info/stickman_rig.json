@@ -6,17 +6,77 @@
         ],
         "partType": "Oval"
     },
-    "LowerTorso": {},
-    "UpperTorso": {},
+    "LowerTorso": {
+        "size": [
+            4,
+            6
+        ],
+        "partType": "Rectangle"
+    },
+    "UpperTorso": {
+        "size": [
+            4,
+            6
+        ],
+        "partType": "Rectangle"
+    },
     "Head": {
         "partType": "Oval"
     },
-    "UpperRightArm": {},
-    "UpperLeftArm": {},
-    "LowerLeftArm": {},
-    "LowerRightArm": {},
-    "UpperRightLeg": {},
-    "UpperLeftLeg": {},
-    "LowerRightLeg": {},
-    "LowerLeftLeg": {}
+    "UpperRightArm": {
+        "size": [
+            2,
+            6
+        ],
+        "partType": "Rectangle"
+    },
+    "UpperLeftArm": {
+        "size": [
+            2,
+            6
+        ],
+        "partType": "Rectangle"
+    },
+    "LowerLeftArm": {
+        "size": [
+            1,
+            5
+        ],
+        "partType": "Rectangle"
+    },
+    "LowerRightArm": {
+        "size": [
+            1,
+            5
+        ],
+        "partType": "Rectangle"
+    },
+    "UpperRightLeg": {
+        "size": [
+            2,
+            7
+        ],
+        "partType": "Rectangle"
+    },
+    "UpperLeftLeg": {
+        "size": [
+            2,
+            7
+        ],
+        "partType": "Rectangle"
+    },
+    "LowerRightLeg": {
+        "size": [
+            2,
+            6
+        ],
+        "partType": "Rectangle"
+    },
+    "LowerLeftLeg": {
+        "size": [
+            2,
+            6
+        ],
+        "partType": "Rectangle"
+    }
 }

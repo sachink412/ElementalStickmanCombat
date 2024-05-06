@@ -78,7 +78,20 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        if (kH.up) {
+            player.y -= player.speed;
+        }
+        if (kH.down) {
+            player.y += player.speed;
+        }
+        if (kH.left) {
+            player.x -= player.speed;
+        }
+        if (kH.right) {
+            player.x += player.speed;
+        }
 
+        // Apply gravity
         if (player.y < groundHeight) {
             player.y += GRAVITY;
         }
@@ -95,6 +108,5 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g);
         g2D.dispose();
-
     }
 }
