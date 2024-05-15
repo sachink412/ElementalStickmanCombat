@@ -1,13 +1,13 @@
 package game;
 
-public class Joint {
+public class Joint extends GameObject {
 
     protected Part Part0 = null;
     protected Part Part1 = null;
     protected TFrame C0 = null;
 
-    public Joint() {
-        C0 = new TFrame();
+    protected Joint() {
+        this.C0 = new TFrame();
     }
 
     public void setPart0(Part part) {

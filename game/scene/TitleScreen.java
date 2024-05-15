@@ -1,11 +1,9 @@
 package game.scene;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import java.awt.Color;
+import java.util.*;
 import java.lang.StringBuffer;
 
 public class TitleScreen extends JPanel {
@@ -14,7 +12,6 @@ public class TitleScreen extends JPanel {
     public StringBuffer currentButton = new StringBuffer();
 
     public TitleScreen() {
-
         JButton startButton = new JButton("Start");
         JButton singlePlayerButton = new JButton("Single Player");
         JButton multiPlayerButton = new JButton("Multi Player");

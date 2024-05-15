@@ -1,23 +1,25 @@
 package game;
 
-// CHANGED
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.FileReader;
 import java.util.*;
 
-import com.google.gson.Gson;
-
 public class Player extends Entity {
-    GamePanel gp;
-    KeyHandler kH;
+    GamePanel gamePanel;
+    KeyHandler keyHandler;
     Color team = Color.WHITE;
+
+    public int x;
+    public int y;
+    public int speed;
+
     HashMap<String, Part> parts = new HashMap<String, Part>();
+    private final String RIG_PATH = "info/stickman_rig.json";
 
-    public int x, y, speed;
-
-    public Player(GamePanel gp, KeyHandler kH, Color team) {
-        this.gp = gp;
-        this.kH = kH;
+    public Player(GamePanel gamePanel, KeyHandler keyHandler, Color team) {
+        this.gamePanel = gamePanel;
+        this.keyHandler = keyHandler;
         this.team = team;
 
         setDefaultValues();
@@ -30,18 +32,28 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (kH.up) {
+        if (keyHandler.up) {
             y -= speed;
-        } else if (kH.down) {
+        }
+        if (keyHandler.down) {
             y += speed;
-        } else if (kH.left) {
+        }
+        if (keyHandler.left) {
             x -= speed;
-        } else if (kH.right) {
+        }
+        if (keyHandler.right) {
             x += speed;
         }
     }
 
     public void draw(Graphics g2D) {
+
+        try {
+            // TODO: Implement JSON parsing for the parts
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Define the stickman's body parts
         Part humanoidRootPart = new Part();
         humanoidRootPart.size = new Vector2D(5, 5);

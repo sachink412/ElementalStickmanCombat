@@ -2,13 +2,14 @@ package game;
 
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
-
 import javax.swing.JFrame;
 
 import game.scene.TitleScreen;
-import game.scene.GameScreen;
-import game.scene.ConnectScreen;
 
+/**
+ * The main class representing the game.
+ * This class extends the JFrame class to create the game window.
+ */
 public class Game extends JFrame {
     private final String WINDOW_TITLE = "Elemental Stickman Combat";
     private final int WINDOW_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
@@ -18,10 +19,10 @@ public class Game extends JFrame {
     public final int ROWS = 9;
 
     private TitleScreen titleScreen;
-    private GameScreen gameScreen;
-    private ConnectScreen connectScreen;
 
     private GamePanel gamePanel;
+
+    public Workspace workspace = new Workspace();
 
     public void refresh() {
         pack();
@@ -38,8 +39,7 @@ public class Game extends JFrame {
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT)); // Set preferred size to maximum screen size
 
         titleScreen = new TitleScreen();
-        gamePanel = new GamePanel(this); // Pass 'this' reference to GamePanel
-        // so it can access Game object
+        gamePanel = new GamePanel(this); // Pass 'this' reference to GamePanel so it can access Game object
         add(titleScreen);
         refresh();
         titleScreen.buttons.get("dev").addActionListener(e -> {

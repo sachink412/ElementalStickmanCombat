@@ -3,6 +3,13 @@ package game;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * The KeyHandler class implements the KeyListener interface to handle keyboard
+ * input for the game.
+ * 
+ * The KeyHandler updates the current state for the WASD (up, down, left and
+ * right) keys, and provides access to their state.
+ */
 public class KeyHandler implements KeyListener {
 
     public boolean up, left, right, down;

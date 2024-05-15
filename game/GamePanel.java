@@ -4,39 +4,46 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 
 import javax.swing.JPanel;
+import javax.imageio.ImageIO;
 
-import game.map.RenderedMap;
+import game.map.MapUtility;
 
+/**
+ * The GamePanel class represents the panel where the game is displayed and
+ * played. It extends the JPanel class and implements the Runnable interface.
+ */
 public class GamePanel extends JPanel implements Runnable {
-    final int SIZE = 16;
-    final int SCALE = 4;
-
+    public final int SIZE = 16;
+    public final int SCALE = 4;
     public final int TILE_SIZE = SIZE * SCALE;
-    final int MAX_COLUMNS = 16;
-    final int MAX_ROWS = 9;
-    final int SCREEN_WIDTH = TILE_SIZE * MAX_COLUMNS;
-    final int SCREEN_HEIGHT = TILE_SIZE * MAX_ROWS;
+    public final int MAX_COLUMNS = 16;
+    public final int MAX_ROWS = 9;
+    public final int SCREEN_WIDTH = TILE_SIZE * MAX_COLUMNS;
+    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_ROWS;
+    private final int FPS = 60;
 
-    private RenderedMap map;
+    private MapUtility map;
+    private KeyHandler keyHandler = new KeyHandler();
+    public Thread gameThread;
 
     private final int GRAVITY = 5;
 
-    KeyHandler kH = new KeyHandler();
-    Thread gameThread;
-    Player player = new Player(this, kH, Color.WHITE);
+    Player player = new Player(this, keyHandler, Color.WHITE);
 
-    final int FPS = 60;
     private Game game;
+    // private Image backgroundMap = map.getBackgroundImage();
 
     public GamePanel(Game game) {
+        this.game = game;
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.addKeyListener(kH);
+        this.addKeyListener(keyHandler);
         this.setFocusable(true);
-        this.game = game;
+        map = new MapUtility();
     }
 
     @Override
@@ -78,18 +85,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
-        if (kH.up) {
-            player.y -= player.speed;
-        }
-        if (kH.down) {
-            player.y += player.speed;
-        }
-        if (kH.left) {
-            player.x -= player.speed;
-        }
-        if (kH.right) {
-            player.x += player.speed;
-        }
 
         // Apply gravity
         if (player.y < groundHeight) {
@@ -101,10 +96,12 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2D = (Graphics2D) g;
-
-        if (map != null && map.getBackground() != null) {
-            // g.drawImage(map.getBackground(), 0, 0, this);
+        GameObject[] objs = game.workspace.getDescendants();
+        for (GameObject obj : objs) {
+            obj.draw(g2D);
         }
+
+        // g.drawImage(map.getBackgroundImage(), 0, 0, null);
 
         player.draw(g);
         g2D.dispose();

@@ -3,7 +3,7 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Part extends Entity {
+public class Part extends GameObject {
     // Properties
 
     // physical properties
@@ -24,12 +24,11 @@ public class Part extends Entity {
     public Vector2D acceleration;
     public Vector2D rotationAcceleration;
     public double gravitationalOffset;
-
-    // identifier property
-    public String name;
+    final static String className = "Part";
 
     // constructor
     public Part() {
+        super(className, className);
         this.position = new Vector2D(0, 0);
         this.orientation = new Vector2D(0, 0);
         this.size = new Vector2D(1, 1);
@@ -43,7 +42,6 @@ public class Part extends Entity {
         this.acceleration = new Vector2D(0, 0);
         this.rotationAcceleration = new Vector2D(0, 0);
         this.gravitationalOffset = 0;
-        this.name = "";
     }
 
     public void draw(Graphics g) {

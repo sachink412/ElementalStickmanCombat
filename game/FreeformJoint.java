@@ -6,6 +6,7 @@ public class FreeformJoint extends Joint {
     public double[] angleRange;
 
     public FreeformJoint(double[] posRange, double[] angleRange) {
+        super();
         this.posRange = posRange;
         this.angleRange = angleRange;
     }

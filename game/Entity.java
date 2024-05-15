@@ -1,5 +1,5 @@
 package game;
 
-public class Entity {
+public abstract class Entity {
 
 }
