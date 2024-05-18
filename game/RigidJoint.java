@@ -6,5 +6,6 @@ import game.objectclasses.Part;
 public class RigidJoint extends Joint {
     public RigidJoint(Part part1, Part part2) {
         super();
+        // test
     }
 }
