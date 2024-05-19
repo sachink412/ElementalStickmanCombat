@@ -13,6 +13,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import game.GamePanel;
+import game.Game;
 
 public class MapUtility {
     private Image backgroundImage;
@@ -61,7 +62,7 @@ public class MapUtility {
     }
 
     public Image getBackgroundImage() {
-        return backgroundImage.getScaledInstance(gamePanel.SCREEN_WIDTH, gamePanel.SCREEN_HEIGHT,
+        return backgroundImage.getScaledInstance(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT,
                 Image.SCALE_SMOOTH);
     }
 }

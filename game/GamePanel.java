@@ -9,6 +9,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 import javax.imageio.ImageIO;
 
+import game.Game;
 import game.LaMeanEngine.CollisionManager;
 import game.map.MapUtility;
 

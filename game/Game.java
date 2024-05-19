@@ -2,8 +2,9 @@ package game;
 
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.JFrame;
-import javax.swing.*;
+
 import game.objectclasses.Part;
 import game.objectclasses.Workspace;
 import game.scene.TitleScreen;
@@ -14,18 +15,17 @@ import game.scene.TitleScreen;
  */
 public class Game extends JFrame {
     private final String WINDOW_TITLE = "Elemental Stickman Combat";
-    private final int WINDOW_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
-    private final int WINDOW_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
+    public static final int WINDOW_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment()
+            .getMaximumWindowBounds().width;
+    public static final int WINDOW_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment()
+            .getMaximumWindowBounds().height;
 
     public final int COLUMNS = 16;
     public final int ROWS = 9;
 
     public TitleScreen titleScreen;
-
     public GamePanel gamePanel;
-
     public Workspace workspace;
-
     public LaMeanEngine physicsEngine;
 
     public void refresh() {
