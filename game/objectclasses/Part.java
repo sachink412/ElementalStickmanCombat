@@ -18,12 +18,13 @@ public class Part extends GameObject {
     public double opacity;
     public String partType;
     public double density;
-    public double frictionCoefficient; // friction coefficient
+    public double frictionCoefficient;
     public Shape shape;
     public String collisionType;
     public boolean anchored;
     public boolean canCollide;
-    // spacial properties
+
+    // spatial properties
     public Vector2D position;
     public double orientation;
     public Vector2D size;
