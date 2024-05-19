@@ -27,7 +27,7 @@ public class MapUtility {
     public void load() {
         try {
             Path directory = Paths.get(MAPS_DIRECTORY);
-            try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, "*.{png,jpg,jpeg}")) {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, "*.{png}")) {
                 List<Image> images = new ArrayList<>();
                 for (Path entry : stream) {
                     images.add(ImageIO.read(entry.toFile()));
