@@ -12,15 +12,18 @@ import javax.swing.*;
 import java.lang.Thread;
 import java.util.HashMap;
 import java.util.HashSet;
+
 public class LaMeanEngine {
     public Game game;
-    final double GRAVITY = .98/2;
+    final double GRAVITY = .98 / 2;
     public CollisionManager collisionManager = new CollisionManager();
+
     public LaMeanEngine(Game game) {
         this.game = game;
     }
+
     public void step() {
-        if (!game.titleScreen.currentButton.toString().equals("Dev") || !game.gamePanel.isVisible()){
+        if (!game.titleScreen.currentButton.toString().equals("Dev") || !game.gamePanel.isVisible()) {
             return;
         }
         GameObject[] descendants = game.workspace.getDescendants();
@@ -28,10 +31,10 @@ public class LaMeanEngine {
             if (descendant instanceof Part) {
                 Part part = (Part) descendant;
                 if (!part.anchored) {
-                part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
-                part.position.add(part.velocity);
-                part.rotationalVelocity += part.rotationAcceleration;
-                part.orientation += part.rotationalVelocity;
+                    part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
+                    part.position.add(part.velocity);
+                    part.rotationalVelocity += part.rotationAcceleration;
+                    part.orientation += part.rotationalVelocity;
                 }
             }
         }
@@ -41,15 +44,18 @@ public class LaMeanEngine {
             e.printStackTrace();
         }
     }
+
     public class CollisionManager {
         public boolean contains(Shape shape, Point point) {
             return shape.contains(point);
-        }   
+        }
 
         public HashMap<Part, HashSet<Part>> collisionMap = new HashMap<Part, HashSet<Part>>();
+
         public Set<ArrayList<?>> getIntersections(Part part, Part otherPart) throws Exception {
             return Intersector.getShapeIntersections(part.shape, otherPart.shape);
         }
+
         public void onCollision(Part part, Part otherPart) throws Exception {
             // get intersection points
             Set<ArrayList<?>> intersections = null;
@@ -63,8 +69,9 @@ public class LaMeanEngine {
             double mass2 = otherPart.getMass();
             Vector2D velocity1 = part.velocity;
             Vector2D velocity2 = otherPart.velocity;
-            
+
         }
+
         public void checkCollisions() throws Exception {
             GameObject[] descendants = game.workspace.getDescendants();
             for (GameObject descendant : descendants) {
@@ -88,8 +95,7 @@ public class LaMeanEngine {
                                         HashSet<Part> parts = collisionMap.get(part);
                                         parts.remove(otherPart);
                                         collisionMap.put(part, parts);
-                                        }   
-                                    } 
+                                    }
                                 }
                             }
                         }
@@ -97,5 +103,6 @@ public class LaMeanEngine {
                 }
             }
         }
-    
+    }
+
 }
