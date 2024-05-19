@@ -1,13 +1,12 @@
 package game;
 
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.JFrame;
-
 import game.objectclasses.Part;
 import game.objectclasses.Workspace;
 import game.scene.TitleScreen;
+
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import javax.swing.JFrame;
 
 /**
  * The main class representing the game.

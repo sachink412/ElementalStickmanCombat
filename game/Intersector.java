@@ -1,18 +1,15 @@
 package game;
 
 import java.awt.geom.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.awt.*;
 import java.util.Set;
-import javax.sound.sampled.Line;
 
 public class Intersector {
     public static void main(String[] args) throws Exception {
-
         final Rectangle rect = new Rectangle(50, 50, 100, 100);
         final Rectangle rect2 = new Rectangle(69, 50, 100, 100);
         final Set<ArrayList<?>> intersections = getShapeIntersections(rect, rect2);

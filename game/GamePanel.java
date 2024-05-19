@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-
 import javax.swing.JPanel;
 
 /**
@@ -27,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final MapUtility map = new MapUtility();
     private KeyHandler keyHandler = new KeyHandler();
     public Thread gameThread;
-    private final int GRAVITY = 5;
+
     public LaMeanEngine engine;
     Player player = new Player(this, keyHandler, Color.WHITE);
 

@@ -2,14 +2,10 @@
 
 package game;
 
+import game.objectclasses.*;
+
 import java.util.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.Point2D;
-import java.lang.reflect.Array;
-import game.objectclasses.*;
-import javax.swing.*;
-import java.lang.Thread;
 import java.util.HashMap;
 import java.util.HashSet;
 

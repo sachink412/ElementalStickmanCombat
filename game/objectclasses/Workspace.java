@@ -1,8 +1,8 @@
 package game.objectclasses;
 
-import java.awt.Graphics2D;
-
 import game.GameObject;
+
+import java.awt.Graphics2D;
 
 public class Workspace extends GameObject {
     public Workspace(String className, GameObject parent) {

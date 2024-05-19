@@ -1,10 +1,10 @@
 package game;
 
+import game.objectclasses.*;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.*;
-
-import game.objectclasses.*;
 
 public class Player {
     GamePanel gamePanel;

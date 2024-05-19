@@ -1,11 +1,10 @@
 package game.objectclasses;
 
-import java.awt.*;
-
 import game.ColorUtils;
 import game.GameObject;
 import game.Vector2D;
 
+import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
