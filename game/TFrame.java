@@ -1,33 +1,30 @@
 package game;
 
 public class TFrame {
-    // position + orientation vector
-    public Vector2D posVector = new Vector2D();
-    public Vector2D orientVector = new Vector2D();
+    public Vector2D positionVector = new Vector2D();
+    public Vector2D orientationVector = new Vector2D();
 
-    // constructor
     public TFrame() {
-        posVector = new Vector2D();
-        orientVector = new Vector2D();
+        positionVector = new Vector2D();
+        orientationVector = new Vector2D();
     }
 
-    public TFrame(Vector2D posVector, Vector2D orientVector) {
-        this.posVector = posVector;
-        this.orientVector = orientVector;
+    public TFrame(Vector2D positionVector, Vector2D orientationVector) {
+        this.positionVector = positionVector;
+        this.orientationVector = orientationVector;
     }
 
-    public TFrame(double xPos, double yPos, double orientX, double orientY) {
-        this.posVector = new Vector2D(xPos, yPos);
-        this.orientVector = new Vector2D(orientX, orientY);
+    public TFrame(double xPosition, double yPosition, double xOrientation, double yOrientation) {
+        this.positionVector = new Vector2D(xPosition, yPosition);
+        this.orientationVector = new Vector2D(xOrientation, yOrientation);
     }
 
-    // methods
     public void combine(TFrame frame) {
-        posVector.add(frame.posVector);
-        orientVector.add(frame.orientVector);
+        positionVector.add(frame.positionVector);
+        orientationVector.add(frame.orientationVector);
     }
 
     public String toString() {
-        return "[" + posVector.toString() + ", " + orientVector.toString() + "]";
+        return "[" + positionVector.toString() + ", " + orientationVector.toString() + "]";
     }
 }

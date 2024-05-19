@@ -15,6 +15,8 @@ import game.scene.TitleScreen;
  */
 public class Game extends JFrame {
     private final String WINDOW_TITLE = "Elemental Stickman Combat";
+
+    // Get the maximum wdth and height of the screen
     public static final int WINDOW_WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment()
             .getMaximumWindowBounds().width;
     public static final int WINDOW_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment()

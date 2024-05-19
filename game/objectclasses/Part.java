@@ -34,6 +34,7 @@ public class Part extends GameObject {
     public Vector2D acceleration;
     public double rotationAcceleration;
     public double gravitationalOffset;
+
     // constructor
     public Part(String className, GameObject parent) {
         super(className, parent);
@@ -96,7 +97,7 @@ public class Part extends GameObject {
                 this.shape = new Polygon();
             }
             int[] xPoints = { x, x + width, x + width / 2 };
-            int[] yPoints = { y+height, y+height, y };
+            int[] yPoints = { y + height, y + height, y };
             Polygon triangle = (Polygon) this.shape;
             triangle.xpoints = xPoints;
             triangle.ypoints = yPoints;
@@ -120,6 +121,7 @@ public class Part extends GameObject {
         // Check if the two parts overlap
         return other.shape.getBounds().intersects(this.shape.getBounds());
     }
+
     public boolean collides(Part other) {
         Area area1 = new Area(this.shape);
         Area area2 = new Area(other.shape);
