@@ -8,7 +8,7 @@ import java.util.*;
 
 import game.objectclasses.*;
 
-public class Player extends Entity {
+public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
     Color team = Color.WHITE;

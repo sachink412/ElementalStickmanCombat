@@ -1,10 +1,10 @@
 package game.map;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,30 +12,40 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import game.GamePanel;
+
 public class MapUtility {
     private Image backgroundImage;
     private Image[] maps;
-    private int currentMapIndex = 0; // Index of the currently rendered map
 
     // Relative path to the directory containing the map files
-    private final String MAPS_DIRECTORY = "mapfiles";
+    private final String MAPS_DIRECTORY = "game/map/maps";
+    private GamePanel gamePanel;
 
-    public MapUtility() {
+    public MapUtility(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+
         load();
     }
 
     public void load() {
-        // Load the background images
-        Path backgroundPath = Paths.get(MAPS_DIRECTORY);
-        List<Image> mapImages = new ArrayList<>();
-
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(backgroundPath)) {
-            for (Path file : stream) {
-                mapImages.add(ImageIO.read(file.toFile()));
-                System.out.println("Loaded map: " + file.getFileName());
+        try {
+            Path directory = Paths.get(MAPS_DIRECTORY);
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, "*.{png,jpg,jpeg}")) {
+                List<Image> images = new ArrayList<>();
+                for (Path entry : stream) {
+                    images.add(ImageIO.read(entry.toFile()));
+                }
+                maps = images.toArray(new Image[0]);
+            } catch (IOException e) {
+                System.err.println("Error loading map images: " + e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (InvalidPathException e) {
+            System.err.println("Invalid maps directory: " + e.getMessage());
+        }
+
+        if (maps.length > 0) {
+            backgroundImage = maps[(int) (Math.random() * maps.length)];
         }
     }
 
@@ -51,6 +61,7 @@ public class MapUtility {
     }
 
     public Image getBackgroundImage() {
-        return backgroundImage;
+        return backgroundImage.getScaledInstance(gamePanel.SCREEN_WIDTH, gamePanel.SCREEN_HEIGHT,
+                Image.SCALE_SMOOTH);
     }
 }

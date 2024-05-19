@@ -26,15 +26,16 @@ public class GamePanel extends JPanel implements Runnable {
     public final int SCREEN_HEIGHT = TILE_SIZE * MAX_ROWS;
     private final int FPS = 60;
 
-    private MapUtility map;
+    private final MapUtility map = new MapUtility(this);
     private KeyHandler keyHandler = new KeyHandler();
     public Thread gameThread;
     private final int GRAVITY = 5;
     public LaMeanEngine engine;
     Player player = new Player(this, keyHandler, Color.WHITE);
 
-    // private Image backgroundMap = map.getBackgroundImage();
+    private Image backgroundImage = map.getBackgroundImage();
     private Game game;
+
     public GamePanel(Game game) {
         this.game = game;
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -42,7 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
-        map = new MapUtility();
+        this.requestFocus();
+        backgroundImage = map.getBackgroundImage();
         engine = new LaMeanEngine(this.game);
     }
 
@@ -96,13 +98,13 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        g.drawImage(backgroundImage, 0, 0, game);
+
         Graphics2D g2d = (Graphics2D) g;
         GameObject[] objs = game.workspace.getDescendants();
         for (GameObject obj : objs) {
             obj.draw(g2d);
         }
-
-        // g.drawImage(map.getBackgroundImage(), 0, 0, null);
 
         player.draw(g2d);
         g2d.drawString("Intersections", 100, 100);

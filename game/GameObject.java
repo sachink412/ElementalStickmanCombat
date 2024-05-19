@@ -3,7 +3,8 @@ package game;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.*;
-public abstract class GameObject extends Entity {
+
+public abstract class GameObject {
 
     // properties
     public String name;
@@ -20,18 +21,18 @@ public abstract class GameObject extends Entity {
         this.parent = null;
     }
 
-
     public GameObject(String className, GameObject parent) {
         super();
         this.name = className;
         this.className = className;
         this.children = new ArrayList<GameObject>();
         if (parent != null) {
-        this.setParent(parent);
+            this.setParent(parent);
         } else {
             this.parent = null;
         }
     }
+
     public GameObject[] getChildren() {
         return children.toArray(new GameObject[0]);
     }
@@ -73,6 +74,7 @@ public abstract class GameObject extends Entity {
         }
         return null;
     }
+
     public GameObject getDescendant(String name) {
         for (GameObject child : children) {
             if (child.name.equals(name)) {
@@ -85,5 +87,6 @@ public abstract class GameObject extends Entity {
         }
         return null;
     }
+
     public abstract void draw(Graphics2D g);
 }

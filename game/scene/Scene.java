@@ -2,8 +2,6 @@ package game.scene;
 
 import javax.swing.JPanel;
 
-import game.Entity;
-
 /**
  * The base class for all scenes in the game.
  * 
@@ -14,6 +12,6 @@ import game.Entity;
  * scenes.
  * </p>
  */
-public abstract class Scene extends Entity {
+public abstract class Scene {
 
 }

@@ -3,7 +3,7 @@ package game;
 import java.awt.Color;
 import java.util.ArrayList;
 
-// external code in order to have more freedom of choice in color strings
+// External code in order to have more freedom of choice in color strings
 public class ColorUtils {
 
     public static ArrayList<ColorName> initColorList() {
@@ -178,8 +178,6 @@ public class ColorUtils {
             return "No matched color name.";
         }
     }
-
-
 
     public static Color getColor(String color) {
         try {

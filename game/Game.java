@@ -27,6 +27,7 @@ public class Game extends JFrame {
     public Workspace workspace;
 
     public LaMeanEngine physicsEngine;
+
     public void refresh() {
         pack();
         setLocationRelativeTo(null);
