@@ -1,13 +1,14 @@
 package game;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-
-public class GameObject extends Entity {
+import java.util.*;
+public abstract class GameObject extends Entity {
 
     // properties
     public String name;
     public String className;
-    protected GameObject[] children;
+    protected ArrayList<GameObject> children;
     protected GameObject parent;
 
     // constructors
@@ -15,37 +16,48 @@ public class GameObject extends Entity {
         super();
         this.name = "GameObject";
         this.className = "GameObject";
-        this.children = new GameObject[0];
+        this.children = new ArrayList<GameObject>();
         this.parent = null;
     }
 
-    public GameObject(String className, String name) {
+
+    public GameObject(String className, GameObject parent) {
         super();
-        this.name = name;
+        this.name = className;
         this.className = className;
-        this.children = new GameObject[0];
-        this.parent = null;
-    }
-
-    // set the parent of this GameObject
-    public void setParent(GameObject parent) {
-        this.parent = parent;
-
-        GameObject[] newChildren = new GameObject[parent.children.length + 1];
-        for (int i = 0; i < parent.children.length; i++) {
-            newChildren[i] = parent.children[i];
+        this.children = new ArrayList<GameObject>();
+        if (parent != null) {
+        this.setParent(parent);
+        } else {
+            this.parent = null;
         }
-        newChildren[parent.children.length] = this;
-        parent.children = newChildren;
-
+    }
+    public GameObject[] getChildren() {
+        return children.toArray(new GameObject[0]);
     }
 
-    // retrieve the parent of this GameObject
+    public GameObject[] getDescendants() {
+        ArrayList<GameObject> descendants = new ArrayList<GameObject>();
+        for (GameObject child : children) {
+            GameObject[] childDescendants = child.getDescendants();
+            descendants.add(child);
+            descendants.addAll(Arrays.asList(childDescendants));
+        }
+        return descendants.toArray(new GameObject[0]);
+    }
+
+    public void setParent(GameObject parent) {
+        if (this.parent != null) {
+            this.parent.children.remove(this);
+        }
+        this.parent = parent;
+        parent.children.add(this);
+    }
+
     public GameObject getParent() {
-        return this.parent;
+        return parent;
     }
 
-    // check if a GameObject is a child of this GameObject
     public GameObject isChild(GameObject child) {
         if (child.getParent() == this) {
             return child;
@@ -53,44 +65,25 @@ public class GameObject extends Entity {
         return null;
     }
 
-    // retrieve all children of this GameObject
-    public GameObject[] getChildren() {
-        // remove any children that have a parent that is not this GameObject
-        for (int i = 0; i < this.children.length; i++) {
-            if (this.children[i].getParent() != this) {
-                GameObject[] newChildren = new GameObject[this.children.length - 1];
-                for (int j = 0; j < i; j++) {
-                    newChildren[j] = this.children[j];
-                }
-                for (int j = i + 1; j < this.children.length; j++) {
-                    newChildren[j - 1] = this.children[j];
-                }
-                this.children = newChildren;
+    public GameObject getChild(String name) {
+        for (GameObject child : children) {
+            if (child.name.equals(name)) {
+                return child;
             }
         }
-
-        return this.children;
+        return null;
     }
-
-    // retrieve all descendants of this GameObject
-    public GameObject[] getDescendants() {
-        GameObject[] descendants = new GameObject[0];
-        for (int i = 0; i < this.children.length; i++) {
-            GameObject[] childDescendants = this.children[i].getDescendants();
-            GameObject[] newDescendants = new GameObject[descendants.length + childDescendants.length + 1];
-            for (int j = 0; j < descendants.length; j++) {
-                newDescendants[j] = descendants[j];
+    public GameObject getDescendant(String name) {
+        for (GameObject child : children) {
+            if (child.name.equals(name)) {
+                return child;
             }
-            newDescendants[descendants.length] = this.children[i];
-            for (int j = 0; j < childDescendants.length; j++) {
-                newDescendants[descendants.length + j + 1] = childDescendants[j];
+            GameObject descendant = child.getDescendant(name);
+            if (descendant != null) {
+                return descendant;
             }
-            descendants = newDescendants;
         }
-        return descendants;
+        return null;
     }
-
-    public void draw(Graphics2D g2d) {
-        throw new UnsupportedOperationException("Unimplemented method 'draw'");
-    }
+    public abstract void draw(Graphics2D g);
 }

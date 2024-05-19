@@ -1,5 +1,10 @@
 package game;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import game.objectclasses.Part;
+
 public class Joint extends GameObject {
 
     protected Part Part0 = null;
@@ -16,5 +21,11 @@ public class Joint extends GameObject {
 
     public void setPart1(Part part) {
         this.Part1 = part;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'draw'");
     }
 }

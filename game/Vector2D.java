@@ -27,26 +27,32 @@ public class Vector2D {
     public void set(Vector2D v) {
         x = v.x;
         y = v.y;
+        
     }
 
-    public void add(Vector2D v) {
+    public Vector2D add(Vector2D v) {
         x += v.x;
         y += v.y;
+        return this;
     }
 
-    public void sub(Vector2D v) {
+    public Vector2D sub(Vector2D v) {
         x -= v.x;
         y -= v.y;
+        return this;
     }
 
-    public void mul(double scalar) {
+    public Vector2D mul(double scalar) {
         x *= scalar;
         y *= scalar;
+        return this;
     }
 
-    public void div(double scalar) {
+    public Vector2D div(double scalar) {
         x /= scalar;
         y /= scalar;
+        return this;
+    
     }
 
     public double mag() {

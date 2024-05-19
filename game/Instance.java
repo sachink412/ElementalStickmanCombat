@@ -4,25 +4,20 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class Instance {
-    Object object;
-
-    public Instance(String className, GameObject parent)
-            throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Class<?> objectClass = Class.forName(className);
-        Class<?>[] parameters = null;
+    public static GameObject create(String className, GameObject parent) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+    InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+        Class<?> objectClass = Class.forName("game.objectclasses." + className);
+        Class<?>[] parameters = new Class[] { String.class, GameObject.class };
         Constructor<?> constructor = objectClass.getConstructor(parameters);
-        Object object = constructor.newInstance();
-        object.getClass().getMethod("setParent", GameObject.class).invoke(object, parent);
-        this.object = object;
+        Object object = constructor.newInstance(className, parent);
+        return (GameObject) object;
     }
-
-    public Instance(String ClassName) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
-            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Class<?> objectClass = Class.forName(ClassName);
-        Class<?>[] parameters = null;
+    public static GameObject create(String className) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+    InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+        Class<?> objectClass = Class.forName("game.objectclasses." + className);
+        Class<?>[] parameters = new Class[] { String.class, GameObject.class };
         Constructor<?> constructor = objectClass.getConstructor(parameters);
-        Object object = constructor.newInstance();
-        this.object = object;
+        Object object = constructor.newInstance(className, null);
+        return (GameObject) object;
     }
 }

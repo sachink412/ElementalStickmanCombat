@@ -9,6 +9,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 import javax.imageio.ImageIO;
 
+import game.LaMeanEngine.CollisionManager;
 import game.map.MapUtility;
 
 /**
@@ -28,14 +29,12 @@ public class GamePanel extends JPanel implements Runnable {
     private MapUtility map;
     private KeyHandler keyHandler = new KeyHandler();
     public Thread gameThread;
-
     private final int GRAVITY = 5;
-
+    public LaMeanEngine engine;
     Player player = new Player(this, keyHandler, Color.WHITE);
 
-    private Game game;
     // private Image backgroundMap = map.getBackgroundImage();
-
+    private Game game;
     public GamePanel(Game game) {
         this.game = game;
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -44,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
         map = new MapUtility();
+        engine = new LaMeanEngine(this.game);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
                 repaint();
                 delta--;
                 drawCount++;
+                engine.step();
             }
 
             if (timer >= 1000000000) {
@@ -95,15 +96,17 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2D = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g;
         GameObject[] objs = game.workspace.getDescendants();
         for (GameObject obj : objs) {
-            obj.draw(g2D);
+            obj.draw(g2d);
         }
 
         // g.drawImage(map.getBackgroundImage(), 0, 0, null);
 
-        player.draw(g);
-        g2D.dispose();
+        player.draw(g2d);
+        g2d.drawString("Intersections", 100, 100);
+        g2d.setColor(Color.GREEN);
+        g.dispose();
     }
 }
