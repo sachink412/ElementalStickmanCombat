@@ -1,5 +1,7 @@
 package game.map;
 
+import game.Game;
+
 import java.awt.Image;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -12,20 +14,14 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import game.GamePanel;
-import game.Game;
-
 public class MapUtility {
     private Image backgroundImage;
     private Image[] maps;
 
     // Relative path to the directory containing the map files
     private final String MAPS_DIRECTORY = "game/map/maps";
-    private GamePanel gamePanel;
 
-    public MapUtility(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
-
+    public MapUtility() {
         load();
     }
 

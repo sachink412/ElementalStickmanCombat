@@ -1,5 +1,7 @@
 package game;
 
+import game.map.MapUtility;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,8 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.JPanel;
-
-import game.map.MapUtility;
 
 /**
  * The GamePanel class represents the panel where the game is displayed and
@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int SCREEN_HEIGHT = TILE_SIZE * MAX_ROWS;
     private final int FPS = 60;
 
-    private final MapUtility map = new MapUtility(this);
+    private final MapUtility map = new MapUtility();
     private KeyHandler keyHandler = new KeyHandler();
     public Thread gameThread;
     private final int GRAVITY = 5;
