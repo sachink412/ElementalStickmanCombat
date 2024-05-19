@@ -5,6 +5,7 @@ import game.Game;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -12,6 +13,8 @@ import java.awt.Toolkit;
 import java.util.*;
 import java.lang.StringBuffer;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 public class TitleScreen extends JPanel {
     public HashMap<String, JButton> buttons = new HashMap<String, JButton>();
@@ -20,18 +23,22 @@ public class TitleScreen extends JPanel {
             .getScaledInstance(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT, Image.SCALE_SMOOTH);;
 
     public TitleScreen() {
+        this.setLayout(new GridBagLayout());
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.requestFocus();
         this.setVisible(true);
 
-        JLabel title = new JLabel("ELEMENTAL STICKMAN COMBAT");
-        title.setFont(new Font("Arial", Font.BOLD, 50)); // Set the font size and style
-        title.setHorizontalAlignment(JLabel.CENTER); // Center align the text
-        title.setForeground(Color.WHITE); // Set the text color
+        GridBagConstraints alignConstraints = new GridBagConstraints();
+        alignConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        alignConstraints.fill = GridBagConstraints.HORIZONTAL;
 
-        this.add(title);
+        JLabel title = new JLabel("ELEMENTAL STICKMAN COMBAT", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 50));
+        title.setForeground(Color.WHITE);
+
+        this.add(title, alignConstraints);
 
         JButton startButton = new JButton("Start");
         JButton singlePlayerButton = new JButton("Single Player");
@@ -41,8 +48,8 @@ public class TitleScreen extends JPanel {
         devButton.setToolTipText(devButtonToolTip);
 
         buttons.put("start", startButton);
-        buttons.put("singlePlayer", singlePlayerButton);
-        buttons.put("multiPlayer", multiPlayerButton);
+        buttons.put("singleplayer", singlePlayerButton);
+        buttons.put("multiplayer", multiPlayerButton);
         buttons.put("dev", devButton);
 
         JButton exitButton = new JButton("Exit");
