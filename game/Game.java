@@ -1,6 +1,5 @@
 package game;
 
-import game.objectclasses.Part;
 import game.objectclasses.Workspace;
 import game.scene.TitleScreen;
 
@@ -41,13 +40,13 @@ public class Game extends JFrame {
         try {
             this.workspace = (Workspace) Instance.create("Workspace");
         } catch (Exception e) {
-            System.out.println("Workspace failed to load");
+            System.out.println("WORKSPACE FAILED TO LOAD");
         }
 
-        setTitle(WINDOW_TITLE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false); // Set resizable to false to maintain fixed size
-        setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT)); // Set preferred size to maximum screen size
+        this.setTitle(WINDOW_TITLE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false); // Set resizable to false to maintain fixed size
+        this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT)); // Set preferred size to maximum screen size
 
         titleScreen = new TitleScreen();
         gamePanel = new GamePanel(this); // Pass 'this' reference to GamePanel so it can access Game object
@@ -56,13 +55,14 @@ public class Game extends JFrame {
         refresh();
 
         titleScreen.buttons.get("dev").addActionListener(e -> {
-            System.out.println("CLICKEDD");
+            System.out.println("CLICKED DEV BUTTON");
             remove(titleScreen);
             add(gamePanel);
             refresh();
 
             gamePanel.startGameThread();
         });
+
         refresh();
     }
 

@@ -4,11 +4,10 @@ import java.awt.Graphics2D;
 import java.util.*;
 
 public abstract class GameObject {
-
     // properties
     public String name;
     public String className;
-    protected ArrayList<GameObject> children;
+    protected HashSet<GameObject> children;
     protected GameObject parent;
 
     // constructors
@@ -16,7 +15,7 @@ public abstract class GameObject {
         super();
         this.name = "GameObject";
         this.className = "GameObject";
-        this.children = new ArrayList<GameObject>();
+        this.children = new HashSet<GameObject>();
         this.parent = null;
     }
 
@@ -24,7 +23,7 @@ public abstract class GameObject {
         super();
         this.name = className;
         this.className = className;
-        this.children = new ArrayList<GameObject>();
+        this.children = new HashSet<GameObject>();
         if (parent != null) {
             this.setParent(parent);
         } else {
@@ -74,6 +73,11 @@ public abstract class GameObject {
         return null;
     }
 
+    public GameObject addChild(GameObject child) {
+        children.add(child);
+        child.parent = this;
+        return child;
+    }
     public GameObject getDescendant(String name) {
         for (GameObject child : children) {
             if (child.name.equals(name)) {

@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 public class LaMeanEngine {
     public Game game;
-    final double GRAVITY = .98 / 2;
+    final double GRAVITY = .98 / 40;
 
     public CollisionManager collisionManager = new CollisionManager();
 
@@ -60,34 +60,23 @@ public class LaMeanEngine {
 
         public void onCollision(Part part, Part otherPart) throws Exception {
             // get intersection points
-            Set<ArrayList<?>> intersections = null;
-            try {
-                intersections = getIntersections(part, otherPart);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (part.canTouch && otherPart.canTouch) {
+                Set<ArrayList<?>> intersections = null;
+                try {
+                    intersections = getIntersections(part, otherPart);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (intersections != null) {
+                    for (ArrayList<?> intersection : intersections) {
+                        Point2D.Double point = (Point2D.Double) intersection.get(0);
+                        Point2D.Double otherPoint = (Point2D.Double) intersection.get(1);
+                        Line2D.Double line = new Line2D.Double(point, otherPoint);
+                        part.position.add(new Vector2D(line.getX1() - line.getX2(), line.getY1() - line.getY2()));
+                    }
+                }
             }
-            // conservation of momentum.
-            double mass1 = part.getMass();
-            double mass2 = otherPart.getMass();
-            Vector2D velocity1 = part.velocity;
-            Vector2D velocity2 = otherPart.velocity;
-
-            // get the normal vector of the collision
-            Vector2D normal = new Vector2D(0, 0);
-            for (ArrayList<?> intersection : intersections) {
-                Point2D.Double intersectionPoint = (Point2D.Double) intersection.get(0);
-
-                normal = new Vector2D(part.position.x - intersectionPoint.x, part.position.y - intersectionPoint.y);
-
-            }
-            normal.normalize();
-
-            // get the tangent vector of the collision
-            Vector2D tangent = new Vector2D(-normal.y, normal.x);
-
-            System.out.println("normal: " + normal);
-            System.out.println("tangent: " + tangent);
-
         }
 
         public void checkCollisions() throws Exception {

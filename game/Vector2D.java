@@ -97,6 +97,10 @@ public class Vector2D {
         return new Vector2D(x, y);
     }
 
+    public double distanceFrom(Vector2D v) {
+        return (double) Math.sqrt(Math.pow(v.x - x, 2) + Math.pow(v.y - y, 2));
+    }
+
     public String toString() {
         return "(" + x + ", " + y + ")";
     }

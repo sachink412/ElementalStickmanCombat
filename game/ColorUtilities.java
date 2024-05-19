@@ -3,9 +3,19 @@ package game;
 import java.awt.Color;
 import java.util.ArrayList;
 
-// External code in order to have more freedom of choice in color strings
-public class ColorUtils {
-
+/**
+ * IMPORTANT: THIS CLASS WAS NOT MADE BY JACOB, LAMIN, OR SACHIN! 
+ * 
+ * This class provides utility methods for working with colors.
+ * It allows for more freedom of choice in color strings.
+ * 
+ * This code is based on a StackOverflow post by user cindyxiaoxiaoli.
+ * 
+ * @see <a href="https://stackoverflow.com/a/20670056">cindyxiaoxiaoli's StackOverflow answer</a>
+ * 
+ * @author cindyxiaoxiaoli
+ */
+public class ColorUtilities {
     public static ArrayList<ColorName> initColorList() {
         ArrayList<ColorName> colorList = new ArrayList<ColorName>();
         colorList.add(new ColorName("AliceBlue", 0xF0, 0xF8, 0xFF));
@@ -148,6 +158,7 @@ public class ColorUtils {
         colorList.add(new ColorName("WhiteSmoke", 0xF5, 0xF5, 0xF5));
         colorList.add(new ColorName("Yellow", 0xFF, 0xFF, 0x00));
         colorList.add(new ColorName("YellowGreen", 0x9A, 0xCD, 0x32));
+
         return colorList;
     }
 
@@ -216,5 +227,4 @@ public class ColorUtils {
         return getColorNameFromRgb(color.getRed(), color.getGreen(),
                 color.getBlue());
     }
-
 }

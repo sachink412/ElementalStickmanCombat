@@ -1,6 +1,6 @@
 package game.objectclasses;
 
-import game.ColorUtils;
+import game.ColorUtilities;
 import game.GameObject;
 import game.Vector2D;
 
@@ -9,9 +9,9 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 public class Part extends GameObject {
-    // Properties
+    /** PROPERTIES */
 
-    // physical properties
+    // Physical properties
     public String brickColor;
     public Color color;
     public double opacity;
@@ -22,22 +22,30 @@ public class Part extends GameObject {
     public String collisionType;
     public boolean anchored;
     public boolean canCollide;
+    public boolean canTouch;
     public boolean fill;
 
-    // spatial properties
+    // Spatial properties
     public Vector2D position;
     public double orientation;
     public Vector2D size;
 
-    // tranformative properties
+    // Tranformative properties
     public Vector2D velocity;
     public double rotationalVelocity;
     public Vector2D acceleration;
     public double rotationAcceleration;
     public double gravitationalOffset;
 
-    // constructor (does not accept property paramaters, only class name and its
-    // parent pool)
+    /**
+     * Constructor for the Part class
+     * 
+     * @param className The name of the class
+     * @param parent    The parent object (usually workspace)
+     * 
+     * Note: The constructor does not accept arguments other than className and the parent.
+     * The properties are initialized to default values, but they are mutable through direct access and no encapsulation to prevent unnecessary overhead.
+     */
     public Part(String className, GameObject parent) {
         super(className, parent);
         this.position = new Vector2D(0, 0);
@@ -59,6 +67,7 @@ public class Part extends GameObject {
         this.anchored = false;
         this.canCollide = true;
         this.fill = true;
+        this.canTouch = true;
     }
 
     public void draw(Graphics2D g) {
@@ -156,7 +165,7 @@ public class Part extends GameObject {
 
     public void setColor(String color) {
         try {
-            Color newcolor = ColorUtils.getColor(color);
+            Color newcolor = ColorUtilities.getColor(color);
             this.color = new Color(newcolor.getRed(), newcolor.getGreen(), newcolor.getBlue());
             this.brickColor = color;
         } catch (Exception e) {
@@ -166,6 +175,6 @@ public class Part extends GameObject {
 
     public void setColor(int r, int g, int b) {
         this.color = new Color(r, g, b);
-        this.brickColor = ColorUtils.getColorNameFromRgb(r, g, b);
+        this.brickColor = ColorUtilities.getColorNameFromRgb(r, g, b);
     }
 }

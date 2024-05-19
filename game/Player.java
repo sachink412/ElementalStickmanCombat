@@ -14,31 +14,84 @@ import com.google.gson.JsonObject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
     Color team = Color.WHITE;
 
-    public int x;
-    public int y;
-    public int speed;
+    // Stores a collection of renderable parts representing the player.
+    public Model playerModel = new Model();
 
-    HashMap<String, Part> parts = new HashMap<String, Part>();
+    public int x = 0;
+    public int y = Game.HEIGHT;
+    public int speed = 1;
+
     // private final String RIG_PATH = "info/stickman_rig.json";
 
-    public Player(GamePanel gamePanel, KeyHandler keyHandler, Color team) {
+    private Workspace workspace;
+
+    public Player(GamePanel gamePanel, KeyHandler keyHandler, Color team, Workspace workspace) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
         this.team = team;
+        this.workspace = workspace;
 
-        setDefaultValues();
+        try {
+            createPlayer(workspace);
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+                | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setDefaultValues() {
-        x = 0;
-        y = Game.HEIGHT;
-        speed = 10;
+    public void createPlayer(Workspace workspace)
+            throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        Part head = (Part) Instance.create("Part", this.workspace);
+        head.partType = "Ellipse";
+        head.position = new Vector2D(0, 0);
+        head.size = new Vector2D(10, 10);
+        head.color = team;
+
+        Part body = (Part) Instance.create("Part", this.workspace);
+        body.partType = "Rectangle";
+        body.position = new Vector2D(0, 0);
+        body.size = new Vector2D(10, 10);
+        body.color = team;
+
+        Part leftArm = (Part) Instance.create("Part", this.workspace);
+        leftArm.partType = "Rectangle";
+        leftArm.position = new Vector2D(0, 0);
+        leftArm.size = new Vector2D(10, 10);
+        leftArm.color = team;
+
+        Part rightArm = (Part) Instance.create("Part", this.workspace);
+        rightArm.partType = "Rectangle";
+        rightArm.position = new Vector2D(0, 0);
+        rightArm.size = new Vector2D(10, 10);
+        rightArm.color = team;
+
+        Part leftLeg = (Part) Instance.create("Part", this.workspace);
+        leftLeg.partType = "Rectangle";
+        leftLeg.position = new Vector2D(0, 0);
+        leftLeg.size = new Vector2D(10, 10);
+        leftLeg.color = team;
+
+        Part rightLeg = (Part) Instance.create("Part", this.workspace);
+        rightLeg.partType = "Rectangle";
+        rightLeg.position = new Vector2D(0, 0);
+        rightLeg.size = new Vector2D(10, 10);
+        rightLeg.color = team;
+
+        playerModel.add(head);
+        playerModel.add(body);
+        playerModel.add(leftArm);
+        playerModel.add(rightArm);
+        playerModel.add(leftLeg);
+        playerModel.add(rightLeg);
     }
 
     public void parseRigFile(String path) {
@@ -47,6 +100,7 @@ public class Player {
             JsonObject jsonObject = gson.fromJson(new FileReader(path), JsonObject.class);
             for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
                 JsonObject partObject = entry.getValue().getAsJsonObject();
+                System.out.println(partObject.toString());
                 String partType = partObject.get("partType").getAsString();
                 JsonArray sizeArray = partObject.get("size").getAsJsonArray();
                 int sizeX = sizeArray.get(0).getAsInt();
@@ -77,6 +131,6 @@ public class Player {
     }
 
     public void draw(Graphics2D g2D) {
-
+        playerModel.draw(g2D);
     }
 }
