@@ -82,15 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    private int groundHeight = SCREEN_HEIGHT - TILE_SIZE;
-
     public void update() {
-        player.update();
 
-        // Apply gravity
-        if (player.y < groundHeight) {
-            player.y += GRAVITY;
-        }
     }
 
     public void paintComponent(Graphics g) {

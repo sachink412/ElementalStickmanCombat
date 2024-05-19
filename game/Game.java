@@ -44,6 +44,7 @@ public class Game extends JFrame {
         } catch (Exception e) {
             System.out.println("Workspace failed to load");
         }
+
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false); // Set resizable to false to maintain fixed size
@@ -54,20 +55,24 @@ public class Game extends JFrame {
         physicsEngine = new LaMeanEngine(this);
         add(titleScreen);
         refresh();
+
         titleScreen.buttons.get("dev").addActionListener(e -> {
             System.out.println("CLICKEDD");
             remove(titleScreen);
             add(gamePanel);
             refresh();
         });
+
         refresh();
         gamePanel.startGameThread();
+
         try {
             Part part = (Part) Instance.create("Part", workspace);
             part.size = new Vector2D(100, 100);
             part.position = new Vector2D(200, 200);
             part.partType = "Triangle";
             part.setColor("Yellow");
+
             Part part2 = (Part) Instance.create("Part", workspace);
             part2.size = new Vector2D(100, 100);
             part2.position = new Vector2D(50, 50);
@@ -85,18 +90,22 @@ public class Game extends JFrame {
             intertest1.position = new Vector2D(150, 150);
             intertest1.partType = "Ellipse";
             intertest1.setColor("Green");
+
             Part intertest2 = (Part) Instance.create("Part", workspace);
             intertest2.size = new Vector2D(10, 10);
             intertest2.position = new Vector2D(69, 150);
             intertest2.partType = "Ellipse";
             intertest2.setColor("Green");
+
             Part intertest3 = (Part) Instance.create("Part", workspace);
             intertest3.size = new Vector2D(10, 10);
             intertest3.position = new Vector2D(150, 50);
             intertest3.partType = "Ellipse";
             intertest3.setColor("Green");
+
             part2.anchored = true;
             part3.anchored = true;
+
             intertest1.anchored = true;
             intertest2.anchored = true;
             intertest3.anchored = true;
@@ -108,7 +117,7 @@ public class Game extends JFrame {
             ground.setColor("Green");
             ground.anchored = true;
         } catch (Exception e) {
-            System.out.println("Part failed to loadss");
+            System.out.println("Part failed to load");
         }
     }
 
