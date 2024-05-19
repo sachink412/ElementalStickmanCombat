@@ -45,14 +45,6 @@ public class MapUtility {
         }
     }
 
-    public void unload() {
-
-    }
-
-    public void update() {
-
-    }
-
     public Image getBackgroundImage() {
         return backgroundImage.getScaledInstance(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT,
                 Image.SCALE_SMOOTH);
