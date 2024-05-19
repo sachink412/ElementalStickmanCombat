@@ -22,6 +22,7 @@ public class Part extends GameObject {
     public String collisionType;
     public boolean anchored;
     public boolean canCollide;
+    public boolean fill;
 
     // spatial properties
     public Vector2D position;
@@ -35,7 +36,8 @@ public class Part extends GameObject {
     public double rotationAcceleration;
     public double gravitationalOffset;
 
-    // constructor
+    // constructor (does not accept property paramaters, only class name and its
+    // parent pool)
     public Part(String className, GameObject parent) {
         super(className, parent);
         this.position = new Vector2D(0, 0);
@@ -56,6 +58,7 @@ public class Part extends GameObject {
         this.collisionType = "Bounce";
         this.anchored = false;
         this.canCollide = true;
+        this.fill = true;
     }
 
     public void draw(Graphics2D g) {
@@ -65,9 +68,9 @@ public class Part extends GameObject {
         int width = (int) this.size.x;
         int height = (int) this.size.y;
 
-        Color colore = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(),
+        Color colorAlpha = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(),
                 (int) (this.opacity * 255));
-        g.setColor(colore);
+        g.setColor(colorAlpha);
 
         // If the part is a rectangle
         if (this.partType.equals("Rectangle")) {
@@ -79,8 +82,13 @@ public class Part extends GameObject {
             ((Rectangle) this.shape).width = width;
             ((Rectangle) this.shape).height = height;
             g.rotate(Math.toRadians(this.orientation));
-            g.draw((Rectangle) this.shape);
+            if (this.fill) {
+                g.fill((Rectangle) this.shape);
+            } else {
+                g.draw((Rectangle) this.shape);
+            }
         }
+
         // If the part is an ellipse
         else if (this.partType.equals("Ellipse")) {
             if (this.shape.getClass() != Ellipse2D.class) {
@@ -88,9 +96,13 @@ public class Part extends GameObject {
             }
             ((Ellipse2D) this.shape).setFrame(x, y, width, height);
             g.rotate(Math.toRadians(this.orientation));
-            g.draw((Ellipse2D) this.shape);
-
+            if (this.fill) {
+                g.fill((Ellipse2D) this.shape);
+            } else {
+                g.draw((Ellipse2D) this.shape);
+            }
         }
+
         // If the part is a triangle
         else if (this.partType.equals("Triangle")) {
             if (this.shape.getClass() != Polygon.class) {
@@ -103,7 +115,11 @@ public class Part extends GameObject {
             triangle.ypoints = yPoints;
             triangle.npoints = 3;
             g.rotate(Math.toRadians(this.orientation));
-            g.draw(triangle);
+            if (this.fill) {
+                g.fillPolygon(triangle);
+            } else {
+                g.drawPolygon(triangle);
+            }
         }
     }
 
@@ -126,9 +142,11 @@ public class Part extends GameObject {
         Area area1 = new Area(this.shape);
         Area area2 = new Area(other.shape);
         area1.intersect(area2);
+
         if (!area1.isEmpty()) {
             return true;
         }
+
         return false;
     }
 
@@ -141,7 +159,6 @@ public class Part extends GameObject {
             Color newcolor = ColorUtils.getColor(color);
             this.color = new Color(newcolor.getRed(), newcolor.getGreen(), newcolor.getBlue());
             this.brickColor = color;
-
         } catch (Exception e) {
             this.color = new Color(0, 0, 0);
         }

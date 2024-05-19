@@ -19,11 +19,9 @@ public class Intersector {
             final Point2D intersection = (Point2D) getList.get(0);
             System.out.println("Intersection at (" + intersection.getX() + ", " + intersection.getY() + ")");
         }
-
     }
 
     public static Set<Point2D> getIntersections(final Polygon poly, final Line2D.Double line) throws Exception {
-
         final PathIterator polyIt = poly.getPathIterator(null);
         final double[] coords = new double[100];
         final double[] firstCoords = new double[2];
@@ -59,7 +57,6 @@ public class Intersector {
             polyIt.next();
         }
         return intersections;
-
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -96,7 +93,6 @@ public class Intersector {
                     lines.add(currentLine);
                     break;
                 }
-
                 case PathIterator.SEG_CUBICTO: {
                     CubicCurve2D curve = new CubicCurve2D.Double(lastCoords[0], lastCoords[1], coords[0], coords[1],
                             coords[2], coords[3], coords[4], coords[5]);
@@ -105,14 +101,12 @@ public class Intersector {
                     curves.add(curve);
                     break;
                 }
-
                 default: {
                     System.out.println("COOKED");
                     System.out.println(type);
                     throw new Exception("Unsupported PathIterator segment type.");
                 }
             }
-
             polyIt.next();
         }
         PathIterator polyIt2 = poly2.getPathIterator(null);
@@ -173,7 +167,6 @@ public class Intersector {
         }
 
         return intersections;
-
     }
 
     public static Point2D getIntersection(final Line2D.Double line1, final Line2D.Double line2) {

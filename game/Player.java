@@ -7,6 +7,13 @@ import java.awt.Graphics2D;
 import java.util.*;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Player {
     GamePanel gamePanel;
@@ -32,7 +39,26 @@ public class Player {
         x = 0;
         y = Game.HEIGHT;
         speed = 10;
+    }
 
+    public void parseRigFile(String path) {
+        Gson gson = new Gson();
+        try {
+            JsonObject jsonObject = gson.fromJson(new FileReader(path), JsonObject.class);
+            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                JsonObject partObject = entry.getValue().getAsJsonObject();
+                String partType = partObject.get("partType").getAsString();
+                JsonArray sizeArray = partObject.get("size").getAsJsonArray();
+                int sizeX = sizeArray.get(0).getAsInt();
+                int sizeY = sizeArray.get(1).getAsInt();
+                Part part = new Part(partType, null);
+                part.position = new Vector2D(0, 0);
+                part.size = new Vector2D(sizeX, sizeY);
+                part.color = team;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void update() {
@@ -51,14 +77,6 @@ public class Player {
     }
 
     public void draw(Graphics2D g2D) {
-        // Draw the head
-        g2D.drawOval(x, y, 20, 20);
-        // Draw the body
-        g2D.drawLine(x + 10, y + 20, x + 10, y + 50);
-        // Draw the arms
-        g2D.drawLine(x - 10, y + 30, x + 30, y + 30);
-        // Draw the legs
-        g2D.drawLine(x + 10, y + 50, x - 10, y + 70);
-        g2D.drawLine(x + 10, y + 50, x + 30, y + 70);
+
     }
 }
