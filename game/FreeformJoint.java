@@ -1,13 +1,13 @@
-// joint that can freely move along a set x/y range of motion, angle of motion
 package game;
 
+// Joint that can freely move along a set of x/y range of motion, angle of motion
 public class FreeformJoint extends Joint {
-    public double[] posRange;
+    public double[] positionRange;
     public double[] angleRange;
 
     public FreeformJoint(double[] posRange, double[] angleRange) {
         super();
-        this.posRange = posRange;
+        this.positionRange = posRange;
         this.angleRange = angleRange;
     }
 
