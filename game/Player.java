@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.*;
 
+import com.google.gson.Gson;
+
 public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
@@ -30,6 +32,7 @@ public class Player {
         x = 0;
         y = Game.HEIGHT;
         speed = 10;
+
     }
 
     public void update() {
@@ -48,6 +51,14 @@ public class Player {
     }
 
     public void draw(Graphics2D g2D) {
-
+        // Draw the head
+        g2D.drawOval(x, y, 20, 20);
+        // Draw the body
+        g2D.drawLine(x + 10, y + 20, x + 10, y + 50);
+        // Draw the arms
+        g2D.drawLine(x - 10, y + 30, x + 30, y + 30);
+        // Draw the legs
+        g2D.drawLine(x + 10, y + 50, x - 10, y + 70);
+        g2D.drawLine(x + 10, y + 50, x + 30, y + 70);
     }
 }
