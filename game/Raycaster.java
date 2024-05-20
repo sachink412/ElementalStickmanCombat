@@ -12,7 +12,7 @@ public class Raycaster {
     public Vector2D direction;
     public Vector2D magnitude;
     public Part[] parts;
-
+    final double intersectionTHRESHOLD = 0.0001;
     public Raycaster(Vector2D origin, Vector2D direction, Vector2D magnitude, Part[] parts) {
         this.origin = origin;
         this.direction = direction;
@@ -28,8 +28,17 @@ public class Raycaster {
         // parts
         // it should be looking for the first intersection point, and return that point
         // if no intersection is found, return null
-        //
+        // try this approach, given the magnitude, analyze the ray in the direction of impact, if it hits, halve the magnitude and repeat until the intersection coordinates are found
 
+        Line2D ray = new Line2D.Double(origin.x, origin.y, origin.x + direction.x * magnitude.x, origin.y + direction.y * magnitude.y);
+        for (Part part : parts) {
+            if (part.shape.intersects(ray.getBounds2D())) {
+                // use recursion, and divide ray magnitude by 2
+                if (magnitude.x < intersectionTHRESHOLD && magnitude.y < intersectionTHRESHOLD) {
+                    return new Vector2D(ray.getX2(), ray.getY2());
+                }
+            }
+        }
         return null;
     }
 }

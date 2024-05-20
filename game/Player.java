@@ -2,15 +2,14 @@ package game;
 
 import game.objectclasses.*;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.*;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.util.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
