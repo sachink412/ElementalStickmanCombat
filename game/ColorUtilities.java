@@ -4,14 +4,15 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 /**
- * IMPORTANT: THIS CLASS WAS NOT MADE BY JACOB, LAMIN, OR SACHIN! 
+ * IMPORTANT: THIS CLASS WAS NOT MADE BY JACOB, LAMIN, OR SACHIN!
  * 
  * This class provides utility methods for working with colors.
  * It allows for more freedom of choice in color strings.
  * 
  * This code is based on a StackOverflow post by user cindyxiaoxiaoli.
  * 
- * @see <a href="https://stackoverflow.com/a/20670056">cindyxiaoxiaoli's StackOverflow answer</a>
+ * @see <a href="https://stackoverflow.com/a/20670056">cindyxiaoxiaoli's
+ *      StackOverflow answer</a>
  * 
  * @author cindyxiaoxiaoli
  */

@@ -3,6 +3,7 @@ package game.objectclasses;
 import game.GameObject;
 import game.Vector2D;
 import java.awt.Graphics2D;
+
 // class that maintains constant velocity
 // for a body in the game
 // it can be released, with an easing time to smoothly stop the body

@@ -47,31 +47,8 @@ public class TitleScreen extends JPanel {
 
         playButton.setBackground(Color.BLACK);
         playButton.setForeground(Color.WHITE);
-
-        playButton.addActionListener(e -> {
-            playButton.setBackground(Color.WHITE);
-            playButton.setForeground(Color.BLACK);
-            playButton.setOpaque(true);
-            playButton.setBorderPainted(false);
-
-        });
-
-        // for (JButton button : buttons.values()) {
-        // button.setBackground(Color.BLACK);
-        // button.setForeground(Color.WHITE);
-        // button.setOpaque(true);
-        // button.setBorderPainted(false);
-        // this.add(button);
-
-        // button.addActionListener(e -> {
-        // currentButton.delete(0, currentButton.length());
-        // currentButton.append(button.getText());
-        // for (JButton b : buttons.values()) {
-        // b.setVisible(false);
-        // }
-        // System.out.println(currentButton.toString());
-        // });
-        // }
+        playButton.setOpaque(true);
+        playButton.setBorderPainted(false);
     }
 
     @Override
