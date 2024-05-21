@@ -130,6 +130,7 @@ public class Player {
     }
 
     public void draw(Graphics2D g2D) {
+        g2D.setColor(team);
         playerModel.draw(g2D);
     }
-}
+} 

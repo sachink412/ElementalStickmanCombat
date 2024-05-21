@@ -58,12 +58,13 @@ public class Vector2D {
         return (double) Math.sqrt(x * x + y * y);
     }
 
-    public void normalize() {
+    public Vector2D normalize() {
         double m = mag();
         if (m != 0) {
             x /= m;
             y /= m;
         }
+        return this;
     }
 
     public double dot(Vector2D v) {

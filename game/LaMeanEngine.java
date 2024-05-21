@@ -61,20 +61,10 @@ public class LaMeanEngine {
         public void onCollision(Part part, Part otherPart) throws Exception {
             // get intersection points
             if (part.canTouch && otherPart.canTouch) {
-                Set<ArrayList<?>> intersections = null;
-                try {
-                    intersections = getIntersections(part, otherPart);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (intersections != null) {
-                    for (ArrayList<?> intersection : intersections) {
-                        Point2D.Double point = (Point2D.Double) intersection.get(0);
-                        Point2D.Double otherPoint = (Point2D.Double) intersection.get(1);
-                        Line2D.Double line = new Line2D.Double(point, otherPoint);
-                        part.position.add(new Vector2D(line.getX1() - line.getX2(), line.getY1() - line.getY2()));
-                    }
+                HashMap<Part, Point2D> intersections = Raycaster.castRay(part.position, part.velocity, part.size.x,
+                        new Part[] { otherPart });
+                for (Part key : intersections.keySet()) {
+                    Point2D intersection = intersections.get(key);
                 }
             }
         }
@@ -102,6 +92,11 @@ public class LaMeanEngine {
                                         HashSet<Part> parts = collisionMap.get(part);
                                         parts.remove(otherPart);
                                         collisionMap.put(part, parts);
+
+                                        if (parts.size() == 0) {
+                                            collisionMap.remove(part);
+                                        }
+
                                     }
                                 }
                             }
