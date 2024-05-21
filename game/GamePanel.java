@@ -69,14 +69,9 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(this, keyHandler, Color.WHITE, game.workspace);
 
         try {
-            // Part part = (Part) Instance.create("Part", game.workspace);
-            // part.size = new Vector2D(100, 100);
-            // part.position = new Vector2D(20, 20);
-            // part.partType = "Ellipse";
-            // part.setColor("Yellow");
-
             Part ground = (Part) Instance.create("Part", game.workspace);
             ground.size = new Vector2D(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT * 0.25);
+            ground.name = "Ground";
             ground.position = new Vector2D(0, Game.WINDOW_HEIGHT - ground.size.y);
             ground.partType = "Rectangle";
             ground.color = Color.BLACK;
@@ -139,7 +134,6 @@ public class GamePanel extends JPanel implements Runnable {
         for (GameObject object : objects) {
             object.draw(g2D);
         }
-
 
         g2D.drawString("Intersections", 100, 100);
         g2D.setColor(Color.GREEN);

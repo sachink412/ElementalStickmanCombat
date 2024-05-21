@@ -45,8 +45,15 @@ public class LaMeanEngine {
                     }
                 }
                 if (!part.anchored && connectedPart == null) {
+
+                    Vector2D bodyVel = new Vector2D(0, 0);
+                    for (GameObject child : part.getChildren()) {
+                        if (child instanceof BodyVelocity) {
+                            bodyVel.add(((BodyVelocity) child).velocity);
+                        }
+                    }
                     part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
-                    part.position.add(part.velocity);
+                    part.position.add(part.velocity.add(bodyVel));
                     part.rotationalVelocity += part.rotationAcceleration;
                     part.orientation += part.rotationalVelocity;
                     if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.25) - part.size.y) {

@@ -45,8 +45,11 @@ public class Part extends GameObject {
      * @param className The name of the class
      * @param parent    The parent object (usually workspace)
      * 
-     * Note: The constructor does not accept arguments other than className and the parent.
-     * The properties are initialized to default values, but they are mutable through direct access and no encapsulation to prevent unnecessary overhead.
+     *                  Note: The constructor does not accept arguments other than
+     *                  className and the parent.
+     *                  The properties are initialized to default values, but they
+     *                  are mutable through direct access and no encapsulation to
+     *                  prevent unnecessary overhead.
      */
     public Part(String className, GameObject parent) {
         super(className, parent);
@@ -79,7 +82,7 @@ public class Part extends GameObject {
         int y = (int) this.position.y;
         int width = (int) this.size.x;
         int height = (int) this.size.y;
-    
+
         Color colorAlpha = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(),
                 (int) (this.opacity * 255));
         g.setColor(colorAlpha);

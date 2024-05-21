@@ -30,6 +30,7 @@ public abstract class GameObject {
             this.parent = null;
         }
     }
+
     public GameObject(String className) {
         super();
         this.name = className;
@@ -37,6 +38,7 @@ public abstract class GameObject {
         this.children = new HashSet<GameObject>();
         this.parent = null;
     }
+
     public GameObject[] getChildren() {
         return children.toArray(new GameObject[0]);
     }
@@ -84,6 +86,13 @@ public abstract class GameObject {
         child.parent = this;
         return child;
     }
+
+    public GameObject removeChild(GameObject child) {
+        children.remove(child);
+        child.parent = null;
+        return child;
+    }
+
     public GameObject getDescendant(String name) {
         for (GameObject child : children) {
             if (child.name.equals(name)) {
