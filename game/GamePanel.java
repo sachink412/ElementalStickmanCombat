@@ -69,49 +69,13 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(this, keyHandler, Color.WHITE, game.workspace);
 
         try {
-            // Part part = (Part) Instance.create("Part", game.workspace);
-            // part.size = new Vector2D(100, 100);
-            // part.position = new Vector2D(200, 200);
-            // part.partType = "Ellipse";
-            // part.setColor("Yellow");
+            Part part = (Part) Instance.create("Part", game.workspace);
+            part.size = new Vector2D(100, 100);
+            part.position = new Vector2D(0,0);
+            part.partType = "Ellipse";
+            part.setColor("Yellow");
 
-            // Part part2 = (Part) Instance.create("Part", game.workspace);
-            // part2.size = new Vector2D(100, 100);
-            // part2.position = new Vector2D(50, 50);
-            // part2.partType = "Rectangle";
-            // part2.setColor("Red");
-            // part2.canTouch = false;
 
-            // Part part3 = (Part) Instance.create("Part", game.workspace);
-            // part3.size = new Vector2D(100, 100);
-            // part3.position = new Vector2D(69, 50);
-            // part3.partType = "Rectangle";
-            // part3.setColor("Blue");
-            // part3.canTouch = false;
-            // Part intertest1 = (Part) Instance.create("Part", game.workspace);
-            // intertest1.size = new Vector2D(10, 10);
-            // intertest1.position = new Vector2D(150, 150);
-            // intertest1.partType = "Ellipse";
-            // intertest1.setColor("Green");
-            // intertest1.canTouch = false;
-            // Part intertest2 = (Part) Instance.create("Part", game.workspace);
-            // intertest2.size = new Vector2D(10, 10);
-            // intertest2.position = new Vector2D(69, 150);
-            // intertest2.partType = "Ellipse";
-            // intertest2.setColor("Green");
-            // intertest2.canTouch = false;
-            // Part intertest3 = (Part) Instance.create("Part", game.workspace);
-            // intertest3.size = new Vector2D(10, 10);
-            // intertest3.position = new Vector2D(150, 50);
-            // intertest3.partType = "Ellipse";
-            // intertest3.setColor("Green");
-            // intertest3.canTouch = false;
-            // part2.anchored = true;
-            // part3.anchored = true;
-
-            // intertest1.anchored = true;
-            // intertest2.anchored = true;
-            // intertest3.anchored = true;
 
             Part ground = (Part) Instance.create("Part", game.workspace);
             ground.size = new Vector2D(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT * 0.125);
@@ -127,7 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS;
+        double drawInterval = 1e9 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;

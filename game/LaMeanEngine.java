@@ -61,10 +61,50 @@ public class LaMeanEngine {
         public void onCollision(Part part, Part otherPart) throws Exception {
             // get intersection points
             if (part.canTouch && otherPart.canTouch) {
-                HashMap<Part, Point2D> intersections = Raycaster.castRay(part.position, part.velocity, part.size.x,
+                HashMap<Part, Point2D> intersections = Raycaster.castRay(part.position, part.velocity, part.velocity.mag(),
                         new Part[] { otherPart });
                 for (Part key : intersections.keySet()) {
+                    System.out.println("INTERSECT");
                     Point2D intersection = intersections.get(key);
+                    Vector2D interPos = new Vector2D(intersection.getX(), intersection.getY());
+                    // get normal
+                    Vector2D normal = new Vector2D(part.position.x - interPos.x, part.position.y - interPos.y);
+                    normal.normalize();
+                    // get tangent
+                    Vector2D tangent = new Vector2D(-normal.y, normal.x);
+
+                    // use conservation of momentum to calculate new velocities
+                    double partNormal = part.velocity.dot(normal);
+                    double otherPartNormal = otherPart.velocity.dot(normal);
+
+                    double partTangent = part.velocity.dot(tangent);
+                    double otherPartTangent = otherPart.velocity.dot(tangent);
+
+                    double partMass = part.getMass();
+                    double otherPartMass = otherPart.getMass();
+
+                    double partNormalFinal = (partNormal * (partMass - otherPartMass) + 2 * otherPartMass * otherPartNormal)
+                            / (partMass + otherPartMass);
+                    double otherPartNormalFinal = (otherPartNormal * (otherPartMass - partMass) + 2 * partMass * partNormal)
+                            / (partMass + otherPartMass);
+                    
+                    part.velocity = new Vector2D(normal.x * partNormalFinal + tangent.x * partTangent,
+                            normal.y * partNormalFinal + tangent.y * partTangent);
+                    if (!otherPart.anchored) {
+                    otherPart.velocity = new Vector2D(normal.x * otherPartNormalFinal + tangent.x * otherPartTangent,
+                            normal.y * otherPartNormalFinal + tangent.y * otherPartTangent);    
+                    }
+                    
+                    // move parts out of each other
+                    
+                    double overlapX = part.size.x + otherPart.size.x - Math.abs(part.position.x - otherPart.position.x);
+                    double overlapY = part.size.y + otherPart.size.y - Math.abs(part.position.y - otherPart.position.y);
+                    double overlap = Math.min(overlapX, overlapY);
+                    double overlapXSign = Math.signum(part.position.x - otherPart.position.x);
+                    double overlapYSign = Math.signum(part.position.y - otherPart.position.y);
+                    part.position.add(new Vector2D(overlap * overlapXSign * normal.x, overlap * overlapYSign * normal.y));
+                    otherPart.position.add(new Vector2D(-overlap * overlapXSign * normal.x, -overlap * overlapYSign * normal.y));
+
                 }
             }
         }

@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 
 public class Model extends GameObject {
     public String name;
-    private Set<Part> parts = new HashSet<>();
+    public Set<Part> parts = new HashSet<>();
 
     public Model() {
         super();
@@ -20,10 +20,6 @@ public class Model extends GameObject {
 
     public void add(Part part) {
         parts.add(part);
-    }
-
-    public Set<Part> getParts() {
-        return parts;
     }
 
     @Override

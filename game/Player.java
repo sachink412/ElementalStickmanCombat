@@ -18,14 +18,14 @@ import java.lang.reflect.InvocationTargetException;
 public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
-    Color team = Color.WHITE;
 
     // Stores a collection of renderable parts representing the player.
     public Model playerModel = new Model();
 
-    public int x = 0;
-    public int y = Game.HEIGHT;
-    public int speed = 1;
+    public int x;
+    public int y;
+    public int speed;
+    Color team;
 
     // private final String RIG_PATH = "info/stickman_rig.json";
 
@@ -131,6 +131,8 @@ public class Player {
 
     public void draw(Graphics2D g2D) {
         g2D.setColor(team);
-        playerModel.draw(g2D);
+        for (Part part : playerModel.parts) {
+            part.draw(g2D);
+        }
     }
-} 
+}
