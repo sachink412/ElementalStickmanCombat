@@ -7,8 +7,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.*;
 import java.lang.StringBuffer;
@@ -33,56 +35,43 @@ public class TitleScreen extends JPanel {
         alignConstraints.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel title = new JLabel("ELEMENTAL STICKMAN COMBAT", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 50));
+        title.setFont(new Font("Verdana", Font.BOLD, 50));
         title.setForeground(Color.WHITE);
-
         this.add(title, alignConstraints);
 
-        JButton startButton = new JButton("Start");
-        JButton singlePlayerButton = new JButton("Single Player");
-        JButton multiPlayerButton = new JButton("Multi Player");
-        JButton devButton = new JButton("Dev");
-        String devButtonToolTip = "This button is for developers only. It will not be available in the final game.";
-        devButton.setToolTipText(devButtonToolTip);
+        JButton playButton = new JButton("PLAY");
+        playButton.setPreferredSize(new Dimension(200, 100));
+        playButton.setFont(new Font("Verdana", Font.BOLD, 20));
+        buttons.put("play", playButton);
+        this.add(playButton);
 
-        buttons.put("start", startButton);
-        buttons.put("singleplayer", singlePlayerButton);
-        buttons.put("multiplayer", multiPlayerButton);
-        buttons.put("dev", devButton);
+        playButton.setBackground(Color.BLACK);
+        playButton.setForeground(Color.WHITE);
 
-        JButton exitButton = new JButton("Exit");
-        exitButton.setBackground(Color.BLACK);
-        exitButton.setForeground(Color.WHITE);
-        exitButton.setOpaque(true);
-        exitButton.setBorderPainted(false);
-        exitButton.setVisible(false);
-        this.add(exitButton);
+        playButton.addActionListener(e -> {
+            playButton.setBackground(Color.WHITE);
+            playButton.setForeground(Color.BLACK);
+            playButton.setOpaque(true);
+            playButton.setBorderPainted(false);
 
-        for (JButton button : buttons.values()) {
-            button.setBackground(Color.BLACK);
-            button.setForeground(Color.WHITE);
-            button.setOpaque(true);
-            button.setBorderPainted(false);
-            this.add(button);
-            button.addActionListener(e -> {
-                currentButton.delete(0, currentButton.length());
-                currentButton.append(button.getText());
-                for (JButton b : buttons.values()) {
-                    b.setVisible(false);
-                }
-                exitButton.setVisible(true);
-                System.out.println(currentButton.toString());
-            });
-        }
-
-        exitButton.addActionListener(e -> {
-            currentButton.delete(0, currentButton.length());
-            for (JButton b : buttons.values()) {
-                b.setVisible(true);
-            }
-            exitButton.setVisible(false);
-            System.out.println("Exit");
         });
+
+        // for (JButton button : buttons.values()) {
+        // button.setBackground(Color.BLACK);
+        // button.setForeground(Color.WHITE);
+        // button.setOpaque(true);
+        // button.setBorderPainted(false);
+        // this.add(button);
+
+        // button.addActionListener(e -> {
+        // currentButton.delete(0, currentButton.length());
+        // currentButton.append(button.getText());
+        // for (JButton b : buttons.values()) {
+        // b.setVisible(false);
+        // }
+        // System.out.println(currentButton.toString());
+        // });
+        // }
     }
 
     @Override

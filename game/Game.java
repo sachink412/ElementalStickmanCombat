@@ -54,8 +54,8 @@ public class Game extends JFrame {
         add(titleScreen);
         refresh();
 
-        titleScreen.buttons.get("dev").addActionListener(e -> {
-            System.out.println("CLICKED DEV BUTTON");
+        titleScreen.buttons.get("play").addActionListener(e -> {
+            System.out.println("CLICKED PLAY BUTTON");
             remove(titleScreen);
             add(gamePanel);
             refresh();
