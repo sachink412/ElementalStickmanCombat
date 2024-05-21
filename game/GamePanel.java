@@ -51,7 +51,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
         this.requestFocus();
-
         // Layered pane to hold the background and game objects
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT));
@@ -71,11 +70,9 @@ public class GamePanel extends JPanel implements Runnable {
         try {
             Part part = (Part) Instance.create("Part", game.workspace);
             part.size = new Vector2D(100, 100);
-            part.position = new Vector2D(0,0);
+            part.position = new Vector2D(20, 20);
             part.partType = "Ellipse";
             part.setColor("Yellow");
-
-
 
             Part ground = (Part) Instance.create("Part", game.workspace);
             ground.size = new Vector2D(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT * 0.125);
@@ -132,19 +129,20 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        this.requestFocusInWindow();
+        Graphics2D g2D = (Graphics2D) g;
 
-        Graphics2D g2d = (Graphics2D) g;
-
-        backgroundPanel.paint(g2d);
-        g2d.drawImage(backgroundImage, 0, 0, null);
+        backgroundPanel.paint(g2D);
+        g2D.drawImage(backgroundImage, 0, 0, null);
 
         GameObject[] objects = game.workspace.getDescendants();
         for (GameObject object : objects) {
-            object.draw(g2d);
+            object.draw(g2D);
         }
 
-        player.draw(g2d);
-        g2d.drawString("Intersections", 100, 100);
-        g2d.setColor(Color.GREEN);
+        player.draw(g2D);
+
+        g2D.drawString("Intersections", 100, 100);
+        g2D.setColor(Color.GREEN);
     }
 }

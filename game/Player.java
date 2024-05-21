@@ -9,11 +9,19 @@ import com.google.gson.JsonObject;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.*;
+
+import javax.imageio.ImageIO;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Player {
     GamePanel gamePanel;
@@ -25,11 +33,15 @@ public class Player {
     public int x;
     public int y;
     public int speed;
-    Color team;
-
-    // private final String RIG_PATH = "info/stickman_rig.json";
+    public int health;
+    public Color team;
 
     private Workspace workspace;
+
+    private final String SPRITE_SHEET_PATH = "game/assets/images/sprites.png";
+    private Image[] sprites;
+    private int currentSpriteIndex = 0;
+    private BufferedImage spriteSheet;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler, Color team, Workspace workspace) {
         this.gamePanel = gamePanel;
@@ -37,102 +49,42 @@ public class Player {
         this.team = team;
         this.workspace = workspace;
 
-        try {
-            createPlayer(workspace);
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-                | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        this.x = 0;
+        this.y = 0;
+        this.health = 100;
+        this.speed = 5;
     }
 
-    public void createPlayer(Workspace workspace)
-            throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
-        Part head = (Part) Instance.create("Part", this.workspace);
-        head.partType = "Ellipse";
-        head.position = new Vector2D(0, 0);
-        head.size = new Vector2D(10, 10);
-        head.color = team;
-
-        Part body = (Part) Instance.create("Part", this.workspace);
-        body.partType = "Rectangle";
-        body.position = new Vector2D(0, 0);
-        body.size = new Vector2D(10, 10);
-        body.color = team;
-
-        Part leftArm = (Part) Instance.create("Part", this.workspace);
-        leftArm.partType = "Rectangle";
-        leftArm.position = new Vector2D(0, 0);
-        leftArm.size = new Vector2D(10, 10);
-        leftArm.color = team;
-
-        Part rightArm = (Part) Instance.create("Part", this.workspace);
-        rightArm.partType = "Rectangle";
-        rightArm.position = new Vector2D(0, 0);
-        rightArm.size = new Vector2D(10, 10);
-        rightArm.color = team;
-
-        Part leftLeg = (Part) Instance.create("Part", this.workspace);
-        leftLeg.partType = "Rectangle";
-        leftLeg.position = new Vector2D(0, 0);
-        leftLeg.size = new Vector2D(10, 10);
-        leftLeg.color = team;
-
-        Part rightLeg = (Part) Instance.create("Part", this.workspace);
-        rightLeg.partType = "Rectangle";
-        rightLeg.position = new Vector2D(0, 0);
-        rightLeg.size = new Vector2D(10, 10);
-        rightLeg.color = team;
-
-        playerModel.add(head);
-        playerModel.add(body);
-        playerModel.add(leftArm);
-        playerModel.add(rightArm);
-        playerModel.add(leftLeg);
-        playerModel.add(rightLeg);
-    }
-
-    public void parseRigFile(String path) {
-        Gson gson = new Gson();
+    private void loadSprites() {
         try {
-            JsonObject jsonObject = gson.fromJson(new FileReader(path), JsonObject.class);
-            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                JsonObject partObject = entry.getValue().getAsJsonObject();
-                System.out.println(partObject.toString());
-                String partType = partObject.get("partType").getAsString();
-                JsonArray sizeArray = partObject.get("size").getAsJsonArray();
-                int sizeX = sizeArray.get(0).getAsInt();
-                int sizeY = sizeArray.get(1).getAsInt();
-                Part part = new Part(partType, null);
-                part.position = new Vector2D(0, 0);
-                part.size = new Vector2D(sizeX, sizeY);
-                part.color = team;
+            File spriteSheetFile = new File(SPRITE_SHEET_PATH);
+            if (!spriteSheetFile.exists()) {
+                throw new FileNotFoundException("Sprite sheet not found at " + SPRITE_SHEET_PATH);
+            } else {
+                spriteSheet = ImageIO.read(spriteSheetFile);
             }
-        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void update() {
-        if (keyHandler.up) {
-            y -= speed;
-        }
-        if (keyHandler.down) {
-            y += speed;
-        }
-        if (keyHandler.left) {
-            x -= speed;
-        }
-        if (keyHandler.right) {
-            x += speed;
-        }
+        // if (keyHandler.up) {
+        // y -= speed;
+        // }
+        // if (keyHandler.down) {
+        // y += speed;
+        // }
+        // if (keyHandler.left) {
+        // x -= speed;
+        // }
+        // if (keyHandler.right) {
+        // x += speed;
+        // }
     }
 
     public void draw(Graphics2D g2D) {
-        g2D.setColor(team);
-        for (Part part : playerModel.parts) {
-            part.draw(g2D);
-        }
+        // g2D.drawImage(sprites[currentSpriteIndex], x, y, null);
     }
 }

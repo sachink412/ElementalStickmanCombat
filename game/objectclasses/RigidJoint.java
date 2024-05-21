@@ -1,6 +1,6 @@
-package game;
+package game.objectclasses;
 
-import game.objectclasses.Part;
+import game.Joint;
 
 // Subclass of joint that maintains rigidity with other parts
 public class RigidJoint extends Joint {

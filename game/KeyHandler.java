@@ -14,9 +14,11 @@ public class KeyHandler implements KeyListener {
 
     public boolean up, left, right, down;
 
+
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        System.out.println(code);
         if (code == KeyEvent.VK_W) {
             up = true;
         }

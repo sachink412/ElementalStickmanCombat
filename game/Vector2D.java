@@ -27,7 +27,6 @@ public class Vector2D {
     public void set(Vector2D v) {
         x = v.x;
         y = v.y;
-
     }
 
     public Vector2D add(Vector2D v) {

@@ -8,8 +8,6 @@ import java.util.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class LaMeanEngine {
     public Game game;
@@ -27,15 +25,45 @@ public class LaMeanEngine {
         }
 
         GameObject[] descendants = game.workspace.getDescendants();
+        // get all of the gameobjects in descendants that are of class RigidJoint, and
+        // put them in a container
 
+        ArrayList<RigidJoint> joints = new ArrayList<RigidJoint>();
+        for (GameObject descendant : descendants) {
+            if (descendant instanceof RigidJoint) {
+                joints.add((RigidJoint) descendant);
+            }
+        }
         for (GameObject descendant : descendants) {
             if (descendant instanceof Part) {
                 Part part = (Part) descendant;
-                if (!part.anchored) {
+                Part connectedPart = null;
+                Joint connectedJoint = null;
+                for (RigidJoint joint : joints) {
+                    if (joint.part1 == part) {
+                        connectedPart = joint.part0;
+                        connectedJoint = joint;
+                    }
+                }
+                if (!part.anchored && connectedPart == null) {
                     part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
                     part.position.add(part.velocity);
                     part.rotationalVelocity += part.rotationAcceleration;
                     part.orientation += part.rotationalVelocity;
+                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.125) - part.size.y) {
+                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.125) - part.size.y;
+                        part.velocity.y = 0;
+                    }
+                } else if (connectedPart != null) {
+                    TFrame C0 = connectedJoint.C0;
+
+                    Vector2D partPos = new Vector2D(connectedPart.position.x + C0.positionVector.x,
+                            connectedPart.position.y + C0.positionVector.y);
+                    double partOri = connectedPart.orientation + C0.orientation;
+
+                    part.position = partPos;
+                    part.orientation = partOri;
+
                 }
             }
         }
@@ -60,53 +88,7 @@ public class LaMeanEngine {
 
         public void onCollision(Part part, Part otherPart) throws Exception {
             // get intersection points
-            if (part.canTouch && otherPart.canTouch) {
-                HashMap<Part, Point2D> intersections = Raycaster.castRay(part.position, part.velocity, part.velocity.mag(),
-                        new Part[] { otherPart });
-                for (Part key : intersections.keySet()) {
-                    System.out.println("INTERSECT");
-                    Point2D intersection = intersections.get(key);
-                    Vector2D interPos = new Vector2D(intersection.getX(), intersection.getY());
-                    // get normal
-                    Vector2D normal = new Vector2D(part.position.x - interPos.x, part.position.y - interPos.y);
-                    normal.normalize();
-                    // get tangent
-                    Vector2D tangent = new Vector2D(-normal.y, normal.x);
 
-                    // use conservation of momentum to calculate new velocities
-                    double partNormal = part.velocity.dot(normal);
-                    double otherPartNormal = otherPart.velocity.dot(normal);
-
-                    double partTangent = part.velocity.dot(tangent);
-                    double otherPartTangent = otherPart.velocity.dot(tangent);
-
-                    double partMass = part.getMass();
-                    double otherPartMass = otherPart.getMass();
-
-                    double partNormalFinal = (partNormal * (partMass - otherPartMass) + 2 * otherPartMass * otherPartNormal)
-                            / (partMass + otherPartMass);
-                    double otherPartNormalFinal = (otherPartNormal * (otherPartMass - partMass) + 2 * partMass * partNormal)
-                            / (partMass + otherPartMass);
-                    
-                    part.velocity = new Vector2D(normal.x * partNormalFinal + tangent.x * partTangent,
-                            normal.y * partNormalFinal + tangent.y * partTangent);
-                    if (!otherPart.anchored) {
-                    otherPart.velocity = new Vector2D(normal.x * otherPartNormalFinal + tangent.x * otherPartTangent,
-                            normal.y * otherPartNormalFinal + tangent.y * otherPartTangent);    
-                    }
-                    
-                    // move parts out of each other
-                    
-                    double overlapX = part.size.x + otherPart.size.x - Math.abs(part.position.x - otherPart.position.x);
-                    double overlapY = part.size.y + otherPart.size.y - Math.abs(part.position.y - otherPart.position.y);
-                    double overlap = Math.min(overlapX, overlapY);
-                    double overlapXSign = Math.signum(part.position.x - otherPart.position.x);
-                    double overlapYSign = Math.signum(part.position.y - otherPart.position.y);
-                    part.position.add(new Vector2D(overlap * overlapXSign * normal.x, overlap * overlapYSign * normal.y));
-                    otherPart.position.add(new Vector2D(-overlap * overlapXSign * normal.x, -overlap * overlapYSign * normal.y));
-
-                }
-            }
         }
 
         public void checkCollisions() throws Exception {
