@@ -11,7 +11,7 @@ import java.awt.geom.Point2D;
 
 public class LaMeanEngine {
     public Game game;
-    final double GRAVITY = .98 / 40;
+    final double GRAVITY = .98 / 15;
 
     public CollisionManager collisionManager = new CollisionManager();
 
@@ -20,10 +20,9 @@ public class LaMeanEngine {
     }
 
     public void step() {
-        if (!game.titleScreen.currentButton.toString().equals("Dev") || !game.gamePanel.isVisible()) {
+        if (!game.gamePanel.isVisible()) {
             return;
         }
-
         GameObject[] descendants = game.workspace.getDescendants();
         // get all of the gameobjects in descendants that are of class RigidJoint, and
         // put them in a container
@@ -50,8 +49,8 @@ public class LaMeanEngine {
                     part.position.add(part.velocity);
                     part.rotationalVelocity += part.rotationAcceleration;
                     part.orientation += part.rotationalVelocity;
-                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.125) - part.size.y) {
-                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.125) - part.size.y;
+                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.25) - part.size.y) {
+                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.25) - part.size.y;
                         part.velocity.y = 0;
                     }
                 } else if (connectedPart != null) {

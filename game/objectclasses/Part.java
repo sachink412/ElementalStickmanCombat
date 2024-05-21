@@ -2,6 +2,7 @@ package game.objectclasses;
 
 import game.ColorUtilities;
 import game.GameObject;
+import game.Stickman;
 import game.Vector2D;
 
 import java.awt.*;
@@ -24,7 +25,7 @@ public class Part extends GameObject {
     public boolean canCollide;
     public boolean canTouch;
     public boolean fill;
-
+    public Stickman stickConnection;
     // Spatial properties
     public Vector2D position;
     public double orientation;
@@ -32,6 +33,7 @@ public class Part extends GameObject {
 
     // Tranformative properties
     public Vector2D velocity;
+    public Vector2D bodyVel;
     public double rotationalVelocity;
     public Vector2D acceleration;
     public double rotationAcceleration;
@@ -68,6 +70,7 @@ public class Part extends GameObject {
         this.canCollide = true;
         this.fill = true;
         this.canTouch = true;
+        this.bodyVel = new Vector2D(0, 0);
     }
 
     public void draw(Graphics2D g) {
@@ -76,11 +79,10 @@ public class Part extends GameObject {
         int y = (int) this.position.y;
         int width = (int) this.size.x;
         int height = (int) this.size.y;
-
+    
         Color colorAlpha = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(),
                 (int) (this.opacity * 255));
         g.setColor(colorAlpha);
-
         // If the part is a rectangle
         if (this.partType.equals("Rectangle")) {
             if (this.shape.getClass() != Rectangle.class) {
@@ -129,6 +131,9 @@ public class Part extends GameObject {
             } else {
                 g.drawPolygon(triangle);
             }
+        }
+        if (stickConnection != null) {
+            stickConnection.draw(g);
         }
     }
 

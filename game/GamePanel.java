@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     private JPanel backgroundPanel;
     private JPanel gameObjectsPanel;
 
-    private Game game;
+    public Game game;
 
     public GamePanel(Game game) {
         this.game = game;
@@ -140,7 +140,6 @@ public class GamePanel extends JPanel implements Runnable {
             object.draw(g2D);
         }
 
-        player.draw(g2D);
 
         g2D.drawString("Intersections", 100, 100);
         g2D.setColor(Color.GREEN);

@@ -10,26 +10,23 @@ import java.awt.event.KeyListener;
  * The KeyHandler updates the current state for the WASD (up, down, left and
  * right) keys, and provides access to their state.
  */
-public class KeyHandler implements KeyListener {
-
-    public boolean up, left, right, down;
-
+public class KeyHandler extends KeyInfo implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         System.out.println(code);
         if (code == KeyEvent.VK_W) {
-            up = true;
+            this.up = true;
         }
         if (code == KeyEvent.VK_A) {
-            left = true;
+            this.left = true;
         }
         if (code == KeyEvent.VK_S) {
-            down = true;
+            this.down = true;
         }
         if (code == KeyEvent.VK_D) {
-            right = true;
+            this.right = true;
         }
     }
 
@@ -37,16 +34,16 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W) {
-            up = false;
+            this.up = false;
         }
         if (code == KeyEvent.VK_A) {
-            left = false;
+            this.left = false;
         }
         if (code == KeyEvent.VK_S) {
-            down = false;
+            this.down = false;
         }
         if (code == KeyEvent.VK_D) {
-            right = false;
+            this.right = false;
         }
     }
 

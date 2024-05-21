@@ -30,7 +30,13 @@ public abstract class GameObject {
             this.parent = null;
         }
     }
-
+    public GameObject(String className) {
+        super();
+        this.name = className;
+        this.className = className;
+        this.children = new HashSet<GameObject>();
+        this.parent = null;
+    }
     public GameObject[] getChildren() {
         return children.toArray(new GameObject[0]);
     }
