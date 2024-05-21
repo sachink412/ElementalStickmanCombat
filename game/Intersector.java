@@ -9,17 +9,17 @@ import java.awt.*;
 import java.util.Set;
 
 public class Intersector {
-    public static void main(String[] args) throws Exception {
-        final Rectangle rect = new Rectangle(50, 50, 100, 100);
-        final Rectangle rect2 = new Rectangle(69, 50, 100, 100);
-        final Set<ArrayList<?>> intersections = getShapeIntersections(rect, rect2);
-        final Iterator<ArrayList<?>> it = intersections.iterator();
-        while (it.hasNext()) {
-            final ArrayList<?> getList = it.next();
-            final Point2D intersection = (Point2D) getList.get(0);
-            System.out.println("Intersection at (" + intersection.getX() + ", " + intersection.getY() + ")");
-        }
-    }
+    // public static void main(String[] args) throws Exception {
+    //     final Rectangle rect = new Rectangle(50, 50, 100, 100);
+    //     final Rectangle rect2 = new Rectangle(69, 50, 100, 100);
+    //     final Set<ArrayList<?>> intersections = getShapeIntersections(rect, rect2);
+    //     final Iterator<ArrayList<?>> it = intersections.iterator();
+    //     while (it.hasNext()) {
+    //         final ArrayList<?> getList = it.next();
+    //         final Point2D intersection = (Point2D) getList.get(0);
+    //         System.out.println("Intersection at (" + intersection.getX() + ", " + intersection.getY() + ")");
+    //     }
+    // }
 
     public static Set<Point2D> getIntersections(final Polygon poly, final Line2D.Double line) throws Exception {
         final PathIterator polyIt = poly.getPathIterator(null);

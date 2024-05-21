@@ -19,8 +19,6 @@ import java.awt.GridBagLayout;
 public class TitleScreen extends JPanel {
     public HashMap<String, JButton> buttons = new HashMap<String, JButton>();
     public StringBuffer currentButton = new StringBuffer();
-    private Image background = Toolkit.getDefaultToolkit().getImage("game/assets/images/Title.png")
-            .getScaledInstance(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT, Image.SCALE_SMOOTH);;
 
     public TitleScreen() {
         this.setLayout(new GridBagLayout());
@@ -90,6 +88,5 @@ public class TitleScreen extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, this);
     }
 }

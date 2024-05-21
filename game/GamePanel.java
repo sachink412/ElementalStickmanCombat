@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
         this.requestFocus();
+
         // Layered pane to hold the background and game objects
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT));
@@ -68,19 +69,18 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(this, keyHandler, Color.WHITE, game.workspace);
 
         try {
-            Part part = (Part) Instance.create("Part", game.workspace);
-            part.size = new Vector2D(100, 100);
-            part.position = new Vector2D(20, 20);
-            part.partType = "Ellipse";
-            part.setColor("Yellow");
+            // Part part = (Part) Instance.create("Part", game.workspace);
+            // part.size = new Vector2D(100, 100);
+            // part.position = new Vector2D(20, 20);
+            // part.partType = "Ellipse";
+            // part.setColor("Yellow");
 
             Part ground = (Part) Instance.create("Part", game.workspace);
-            ground.size = new Vector2D(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT * 0.125);
+            ground.size = new Vector2D(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT * 0.25);
             ground.position = new Vector2D(0, Game.WINDOW_HEIGHT - ground.size.y);
             ground.partType = "Rectangle";
             ground.color = Color.BLACK;
             ground.anchored = true;
-
         } catch (Exception e) {
             System.out.println("Part failed to load");
         }
