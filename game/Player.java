@@ -20,7 +20,6 @@ public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
-
     public int speed;
     public int health;
     public Color team;
@@ -32,7 +31,6 @@ public class Player {
         this.team = team;
         this.stickman = new Stickman(gamePanel.game, Element.FIRE, "Player", team.toString(), keyHandler);
     }
-
 
     public void update() {
         this.stickman.update();
