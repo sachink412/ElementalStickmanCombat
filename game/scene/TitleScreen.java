@@ -9,18 +9,13 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.util.*;
-import java.lang.StringBuffer;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 public class TitleScreen extends JPanel {
     public HashMap<String, JButton> buttons = new HashMap<String, JButton>();
-    public StringBuffer currentButton = new StringBuffer();
 
     public TitleScreen() {
         this.setLayout(new GridBagLayout());
