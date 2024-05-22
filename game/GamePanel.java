@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.JProgressBar;
+import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -150,12 +151,16 @@ public class GamePanel extends JPanel implements Runnable {
         playerHealthBar.setValue(player.stickman.health);
         playerHealthBar.setBounds(0, 0, healthBarWidth, healthBarHeight);
         playerHealthBar.setForeground(Color.GREEN);
+        playerHealthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add border
+        playerHealthBar.setBackground(Color.DARK_GRAY); // Change background color
         playerHealthBar.paint(g2D);
 
         // Bot Health Bar
         botHealthBar.setValue(bot.stickman.health);
         botHealthBar.setBounds(Game.WINDOW_WIDTH - healthBarWidth, 0, healthBarWidth, healthBarHeight);
         botHealthBar.setForeground(Color.RED);
+        botHealthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add border
+        botHealthBar.setBackground(Color.DARK_GRAY); // Change background color
         botHealthBar.paint(g2D);
 
         GameObject[] objects = game.workspace.getDescendants();

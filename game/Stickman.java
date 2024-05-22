@@ -44,7 +44,7 @@ public class Stickman {
     public Game game;
     private double jumpCD = 0;
     private double punchCD = 0;
-
+    public double speed = 1;
     private final SoundUtility SOUND = new SoundUtility();
 
     public boolean lookingRight = true;
@@ -61,8 +61,8 @@ public class Stickman {
             try {
                 rightVelocity = (BodyVelocity) Instance.create("BodyVelocity");
                 leftVelocity = (BodyVelocity) Instance.create("BodyVelocity");
-                rightVelocity.velocity = new Vector2D(10, 0);
-                leftVelocity.velocity = new Vector2D(-10, 0);
+                rightVelocity.velocity = new Vector2D(10 * speed, 0);
+                leftVelocity.velocity = new Vector2D(-10 * speed, 0);
             } catch (Exception e) {
                 e.printStackTrace();
                 return;

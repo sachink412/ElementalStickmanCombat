@@ -13,6 +13,7 @@ public class Bot {
     public int health;
     public Color team;
     public Stickman stickman;
+    public double runCD = 0;
 
     public Bot(GamePanel gamePanel, KeyInfo keyHandler, Color team, Workspace workspace) {
         this.gamePanel = gamePanel;
@@ -23,9 +24,11 @@ public class Bot {
         this.stickman = new Stickman(gamePanel.game, randomElement, "Bot", team.toString(), keyHandler);
         keyHandler.leftRight = false;
         this.stickman.hrp.position = new Vector2D(Game.WINDOW_WIDTH - 400, 100);
+        this.stickman.speed = .5;
     }
 
     public void update() {
+        runCD -= 1 / 60.0;
         this.stickman.update();
         trackPlayer();
     }
@@ -46,20 +49,16 @@ public class Bot {
 
         if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 60) {
             keyHandler.q = true;
+            runCD = .5;
         } else {
             keyHandler.q = false;
         }
-        if (player.stickman.hrp.position.x < this.stickman.hrp.position.x) {
+        if (player.stickman.hrp.position.x < this.stickman.hrp.position.x && (runCD <= 0)) {
             keyHandler.left = true;
         } else {
             keyHandler.left = false;
         }
-        if (player.stickman.hrp.position.x < this.stickman.hrp.position.x) {
-            keyHandler.left = true;
-        } else {
-            keyHandler.left = false;
-        }
-        if (player.stickman.hrp.position.x > this.stickman.hrp.position.x) {
+        if (player.stickman.hrp.position.x > this.stickman.hrp.position.x && (runCD <= 0)) {
             keyHandler.right = true;
         } else {
             keyHandler.right = false;
