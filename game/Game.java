@@ -53,7 +53,6 @@ public class Game extends JFrame {
         add(titleScreen);
         refresh();
         titleScreen.buttons.get("play").addActionListener(e -> {
-            System.out.println("CLICKED PLAY BUTTON");
             remove(titleScreen);
             add(gamePanel);
             refresh();
@@ -64,7 +63,8 @@ public class Game extends JFrame {
     }
 
     public void endGame() {
-            
+        //TODO: IMPLEMENT THIS!
+        // Make it close out of the game (system.exit(0)), and then print to the console who won.
     }
     
     public static void main(String[] args) {

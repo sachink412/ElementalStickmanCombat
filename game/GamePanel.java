@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         if (player.stickman.health < 0 || bot.stickman.health < 0) {
-            this.endGame();
+            game.endGame();
         }
 
         player.update();
@@ -145,24 +145,6 @@ public class GamePanel extends JPanel implements Runnable {
         Debris.updateDebris();
     }
 
-    public void endGame() {
-        String winner = player.stickman.health < 0 ? "Bot wins!" : "Player wins!";
-
-        JLabel winnerLabel = new JLabel(winner, JLabel.CENTER);
-        winnerLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        winnerLabel.setForeground(Color.WHITE);
-        this.add(winnerLabel);
-
-        this.repaint();
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.exit(0);
-    }
 
     @Override
     public void paintComponent(Graphics g) {
