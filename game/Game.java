@@ -52,7 +52,6 @@ public class Game extends JFrame {
         physicsEngine = new LaMeanEngine(this);
         add(titleScreen);
         refresh();
-
         titleScreen.buttons.get("play").addActionListener(e -> {
             System.out.println("CLICKED PLAY BUTTON");
             remove(titleScreen);
@@ -64,6 +63,10 @@ public class Game extends JFrame {
         refresh();
     }
 
+    public void endGame() {
+            
+    }
+    
     public static void main(String[] args) {
         new Game();
     }

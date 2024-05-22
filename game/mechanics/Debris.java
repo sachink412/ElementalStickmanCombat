@@ -11,16 +11,17 @@ public class Debris {
     public Debris() {
     }
 
-    public static void addDebris(GameObject part, double time) {
+    public static synchronized void addDebris(GameObject part, double time) {
         setDeletion.put(part, time);
     }
 
-    public static void removeDebris(GameObject part) {
+    public static synchronized void removeDebris(GameObject part) {
         setDeletion.remove(part);
     }
 
-    public static void updateDebris() {
+    public static synchronized void updateDebris() {
         Iterator it = setDeletion.entrySet().iterator();
+        
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             GameObject part = (GameObject) pair.getKey();
@@ -33,5 +34,4 @@ public class Debris {
             }
         }
     }
-
 }

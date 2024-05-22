@@ -11,8 +11,8 @@ import game.objectclasses.*;
 
 import java.util.*;
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
+// import java.awt.geom.Line2D;
+// import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 
 public class LaMeanEngine {
@@ -58,6 +58,7 @@ public class LaMeanEngine {
                     boolean restrictY = false;
                     for (GameObject child : part.getChildren()) {
                         if (child instanceof BodyVelocity) {
+                            try {
                             bodyVel.add(((BodyVelocity) child).velocity);
                             if (((BodyVelocity) child).restrictX) {
                                 restrictX = true;
@@ -65,6 +66,9 @@ public class LaMeanEngine {
                             if (((BodyVelocity) child).restrictY) {
                                 restrictY = true;
                             }
+                        } catch (Exception e){
+                            System.out.println("Could not get velocity.");
+                        }
                         }
                     }
                     part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
@@ -76,12 +80,11 @@ public class LaMeanEngine {
                     if (restrictY) {
                         yVel *= 0;
                     }
-                    part.position.add(new Vector2D(part.velocity.x + bodyVel.x,
-                            part.velocity.y + bodyVel.y));
+                    part.position.add(new Vector2D(xVel, yVel));
                     part.rotationalVelocity += part.rotationAcceleration;
                     part.orientation += part.rotationalVelocity;
-                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.249) - part.size.y) {
-                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.249) - part.size.y;
+                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.245) - part.size.y) {
+                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.245) - part.size.y;
                         part.velocity.y = 0;
                     }
                     if (part.name != "Tsunami") {
@@ -179,12 +182,12 @@ public class LaMeanEngine {
                 }
             }
 
-            if (part.name == "Fire Wave" && otherPart.name == "HumanoidRootPart"
+            if (part.name == "fireWave" && otherPart.name == "HumanoidRootPart"
                     && otherPart.stickConnection != part.stickConnection) {
 
                 if (!part.hitSave.contains(otherPart)) {
                     boolean lookingRight = part.velocity.x >= 0 ? true : false;
-                    otherPart.stickConnection.health -= .5;
+                    otherPart.stickConnection.health -= 1.25;
                     new Thread(() -> {
                         BodyVelocity bodyVel = null;
                         try {
@@ -238,7 +241,7 @@ public class LaMeanEngine {
                     && otherPart.stickConnection != part.stickConnection) {
                 if (!part.hitSave.contains(otherPart)) {
                     boolean lookingRight = part.velocity.x >= 0 ? true : false;
-                    otherPart.stickConnection.health -= 15;
+                    otherPart.stickConnection.health -= 10;
                     new Thread(() -> {
                         BodyVelocity bodyVel = null;
                         try {

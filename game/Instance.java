@@ -6,9 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * The Instance class is a utility class that creates instances of GameObjects
  * based on the class name.
- * 
- * It basically reworks the mechanisms of how classes and objects are created in
- * Java for this program.
  */
 public class Instance {
     public static GameObject create(String className, GameObject parent)

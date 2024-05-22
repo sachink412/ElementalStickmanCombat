@@ -6,27 +6,23 @@ import game.mechanics.LaMeanEngine.CollisionManager;
 import game.objectclasses.*;
 import game.sound.SoundUtility;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.util.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.lang.Thread;
 
 public class Stickman {
     public Element element;
     public String name;
-    public String color;
+    public Color color;
     public Model model;
     public int health = 100;
     public KeyInfo keys;
@@ -49,7 +45,7 @@ public class Stickman {
 
     public boolean lookingRight = true;
 
-    public Stickman(Game game, Element element, String name, String color, KeyInfo keyInfo) {
+    public Stickman(Game game, Element element, String name, Color color, KeyInfo keyInfo) {
         this.element = element;
         this.name = name;
         this.color = color;
@@ -73,13 +69,12 @@ public class Stickman {
             hrp.setColor("Red");
             hrp.name = "HumanoidRootPart";
             hrp.partType = "Rectangle";
-            hrp.opacity = 0.5;
+            hrp.opacity = 0;
             hrp.stickConnection = this;
             this.hrp = hrp;
             this.game = game;
             loadSprites();
             playAnimation("idle", 1000);
-
         } catch (Exception e) {
         }
     }
@@ -162,7 +157,7 @@ public class Stickman {
         return op.filter(image, null);
     }
 
-    public void update() {
+    public synchronized void update() {
 
         if (keys.q) {
             try {
@@ -304,7 +299,7 @@ public class Stickman {
             hitBox.setColor("Red");
             hitBox.name = "HitBox";
             hitBox.partType = "Rectangle";
-            hitBox.opacity = 0.5;
+            hitBox.opacity = 0;
             hitBox.anchored = true;
             hitBox.stickConnection = this;
             SOUND.stop("punch");
@@ -346,6 +341,7 @@ public class Stickman {
 
         if (skillName == "Fire Wave" && firewaveCD <= 0) {
             firewaveCD = 12;
+            playAnimation("attacks", 1000);
             Part fireWave = (Part) Instance.create("Part", game.workspace);
             fireWave.size = new Vector2D(3000, 85);
             fireWave.position = new Vector2D(lookingRight ? hrp.position.x : hrp.position.x - 3000, hrp.position.y);
@@ -359,8 +355,11 @@ public class Stickman {
                     for (int i = 0; i < 85; i++) {
                         fireWave.size.sub(new Vector2D(0, 1));
                         fireWave.position.add(new Vector2D(0, 0.5));
+                        fireWave.opacity -= 1 / 85.0;
                         Thread.sleep(15);
+                        if (i%3 == 0) {
                         fireWave.hitSave = new HashSet<>();
+                        }{}
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -370,29 +369,52 @@ public class Stickman {
 
         if (skillName == "Tsunami" && tsunamiCD <= 0) {
             tsunamiCD = 15;
-            for (int i = 0; i < 2; i++) {
+            new Thread(() ->{
+            for (int i = 0; i <= 2; i++) {
+                try {
+                playAnimation("attacks", 1000);
                 Part tsunami = (Part) Instance.create("Part", game.workspace);
                 tsunami.partType = "Triangle";
                 tsunami.size = new Vector2D(300, 400);
+                tsunami.name = "Tsunami";
                 tsunami.position = new Vector2D(this.hrp.position.x, this.hrp.position.y);
+                tsunami.stickConnection = this;
                 BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", tsunami);
                 bodyVel.velocity = new Vector2D(lookingRight ? 20 : -20, 0);
                 bodyVel.restrictY = true;
                 tsunami.setColor("Blue");
                 Part tsunamiFoam = (Part) Instance.create("Part", tsunami);
-                tsunamiFoam.size = new Vector2D(100, 50);
+                tsunamiFoam.size = new Vector2D(140, 5);
                 tsunamiFoam.setColor("White");
                 tsunamiFoam.canTouch = false;
                 RigidJoint newJoint = (RigidJoint) Instance.create("RigidJoint", tsunami);
                 newJoint.part0 = tsunami;
                 newJoint.part1 = tsunamiFoam;
-                newJoint.C0 = new TFrame(new Vector2D(50, 0), 0);
+                newJoint.C0 = new TFrame(new Vector2D(75, 10), 0);
                 Debris.addDebris(tsunami, 2);
-                Thread.sleep(50);
+                Thread.sleep(300);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+            ).start();
+        }
     }
-
+    
+    public static BufferedImage dye(BufferedImage image, Color color)
+    {
+        int w = image.getWidth();
+        int h = image.getHeight();
+        BufferedImage dyed = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = dyed.createGraphics();
+        g.drawImage(image, 0,0, null);
+        g.setComposite(AlphaComposite.SrcAtop);
+        g.setColor(color);
+        g.fillRect(0,0,w,h);
+        g.dispose();
+        return dyed;
+    }
     public void draw(Graphics2D g) {
         BufferedImage pasteSprite = currentSprite;
         if (keys.leftRight) {
@@ -400,6 +422,9 @@ public class Stickman {
         } else {
             pasteSprite = flipHorizontally(currentSprite);
             lookingRight = false;
+        }
+        if (this.color != Color.BLACK) {
+            pasteSprite = dye(pasteSprite, color);
         }
         g.drawImage(pasteSprite, (int) hrp.position.x, (int) hrp.position.y + 5, null);
     }

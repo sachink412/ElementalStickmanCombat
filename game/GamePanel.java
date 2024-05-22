@@ -5,6 +5,7 @@ import game.mechanics.Debris;
 import game.mechanics.LaMeanEngine;
 import game.mechanics.Vector2D;
 import game.objectclasses.Part;
+import game.sound.SoundUtility;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +16,7 @@ import java.awt.Image;
 
 import javax.swing.JProgressBar;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -31,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     private KeyHandler keyHandler = new KeyHandler();
     public Thread gameThread;
     public LaMeanEngine engine;
+    public SoundUtility soundUtility = new SoundUtility();
 
     private Image backgroundImage;
     private JLayeredPane layeredPane;
@@ -68,8 +71,8 @@ public class GamePanel extends JPanel implements Runnable {
         backgroundPanel.setOpaque(false);
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
 
-        player = new Player(this, keyHandler, Color.WHITE, game.workspace);
-        bot = new Bot(this, new KeyInfo(), Color.RED, game.workspace);
+        player = new Player(this, keyHandler, Color.BLACK, game.workspace);
+        bot = new Bot(this, new KeyInfo(), Color.WHITE, game.workspace);
 
         playerHealthBar = new JProgressBar(0, player.stickman.health);
         playerHealthBar.setValue(player.stickman.health);
@@ -92,6 +95,8 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (Exception e) {
             System.out.println("Part failed to load");
         }
+
+        soundUtility.play("bgm");
     }
 
     @Override
@@ -131,9 +136,32 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        if (player.stickman.health < 0 || bot.stickman.health < 0) {
+            this.endGame();
+        }
+
         player.update();
         bot.update();
         Debris.updateDebris();
+    }
+
+    public void endGame() {
+        String winner = player.stickman.health < 0 ? "Bot wins!" : "Player wins!";
+
+        JLabel winnerLabel = new JLabel(winner, JLabel.CENTER);
+        winnerLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        winnerLabel.setForeground(Color.WHITE);
+        this.add(winnerLabel);
+
+        this.repaint();
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.exit(0);
     }
 
     @Override
@@ -172,10 +200,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // Draw the placeholder circles for the element attacks
-        int circleDiameter = 150;
+        int circleDiameter = 100;
         int circleSpacing = 10;
-        int circleCount = Element.values()[0].getAttacks().size(); // Assuming all elements have the same number of
-                                                                   // attacks
+        int circleCount = Element.values()[0].getAttacks().size();
         int startX = getWidth() - (circleCount * (circleDiameter + circleSpacing));
         int y = getHeight() - circleDiameter - circleSpacing;
 

@@ -17,7 +17,7 @@ public class Player {
         this.keyHandler = keyHandler;
         this.team = team;
         this.stickman = new Stickman(gamePanel.game, (Math.random() < 0.5 ? Element.FIRE : Element.WATER), "Player",
-                team.toString(), keyHandler);
+                team, keyHandler);
     }
 
     public void update() {

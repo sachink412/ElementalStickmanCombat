@@ -22,10 +22,10 @@ public class Bot {
         this.team = team;
         Element[] elements = Element.values();
         Element randomElement = elements[(int) (Math.random() * elements.length)];
-        this.stickman = new Stickman(gamePanel.game, randomElement, "Bot", team.toString(), keyHandler);
+        this.stickman = new Stickman(gamePanel.game, randomElement, "Bot", team, keyHandler);
         keyHandler.leftRight = false;
         this.stickman.hrp.position = new Vector2D(Game.WINDOW_WIDTH - 400, 100);
-        this.stickman.speed = .5;
+        this.stickman.speed = .3;
     }
 
     public void update() {
@@ -50,7 +50,7 @@ public class Bot {
 
         if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 60) {
             keyHandler.q = true;
-            runCD = .5;
+            runCD = .8;
         } else {
             keyHandler.q = false;
         }

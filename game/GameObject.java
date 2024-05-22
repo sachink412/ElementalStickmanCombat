@@ -39,8 +39,8 @@ public abstract class GameObject {
         this.parent = null;
     }
 
-    public GameObject[] getChildren() {
-        return children.toArray(new GameObject[0]);
+    public HashSet<GameObject> getChildren() {
+        return children;
     }
 
     public GameObject[] getDescendants() {
