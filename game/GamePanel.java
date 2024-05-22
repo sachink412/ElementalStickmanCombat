@@ -8,6 +8,7 @@ import game.objectclasses.Part;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -145,28 +146,51 @@ public class GamePanel extends JPanel implements Runnable {
         g2D.drawImage(backgroundImage, 0, 0, null);
 
         int healthBarWidth = Game.WINDOW_WIDTH / 4;
-        int healthBarHeight = 20;
+        int healthBarHeight = Game.WINDOW_HEIGHT / 20;
 
         // Player Health Bar
         playerHealthBar.setValue(player.stickman.health);
         playerHealthBar.setBounds(0, 0, healthBarWidth, healthBarHeight);
+        playerHealthBar.setFont(new Font("Verdana", Font.BOLD, 20));
         playerHealthBar.setForeground(Color.GREEN);
-        playerHealthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add border
-        playerHealthBar.setBackground(Color.DARK_GRAY); // Change background color
+        playerHealthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        playerHealthBar.setBackground(Color.DARK_GRAY);
         playerHealthBar.paint(g2D);
 
         // Bot Health Bar
         botHealthBar.setValue(bot.stickman.health);
         botHealthBar.setBounds(Game.WINDOW_WIDTH - healthBarWidth, 0, healthBarWidth, healthBarHeight);
+        botHealthBar.setFont(new Font("Verdana", Font.BOLD, 20));
         botHealthBar.setForeground(Color.RED);
-        botHealthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add border
-        botHealthBar.setBackground(Color.DARK_GRAY); // Change background color
+        botHealthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        botHealthBar.setBackground(Color.DARK_GRAY);
         botHealthBar.paint(g2D);
 
         GameObject[] objects = game.workspace.getDescendants();
         for (GameObject object : objects) {
             object.draw(g2D);
         }
+
+        // Draw the placeholder circles for the element attacks
+        int circleDiameter = 150;
+        int circleSpacing = 10;
+        int circleCount = Element.values()[0].getAttacks().size(); // Assuming all elements have the same number of
+                                                                   // attacks
+        int startX = getWidth() - (circleCount * (circleDiameter + circleSpacing));
+        int y = getHeight() - circleDiameter - circleSpacing;
+
+        g.setColor(Color.GRAY);
+        Image[] attackImages = ELEMENTS.elementAndAttacks.get(player.stickman.element);
+        g.setFont(new Font("Verdana", Font.BOLD, 30));
+        g.setColor(Color.WHITE);
+
+        for (int i = 0; i < circleCount; i++) {
+            int x = startX + i * (circleDiameter + circleSpacing);
+            g.drawOval(x, y, circleDiameter, circleDiameter);
+            g.drawImage(attackImages[i], x, y, circleDiameter, circleDiameter, null);
+            g.drawString(Integer.toString(i + 1), x + circleDiameter / 2, y + circleDiameter / 2);
+        }
+
         g2D.setColor(Color.GREEN);
     }
 }

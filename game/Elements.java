@@ -5,37 +5,35 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Elements {
-    public HashMap<String, Image> attackImages = new HashMap<String, Image>();
-
     private final String ATTACK_IMAGES_DIRECTORY = "game/assets/attacks";
+    public HashMap<String, Image> attackAndImages = new HashMap<String, Image>();
+    public HashMap<Element, Image[]> elementAndAttacks = new HashMap<Element, Image[]>();
 
     public Elements() {
         load();
     }
 
     private void load() {
+        // Load the thumbnails for each attack
         try {
-            Path directory = Paths.get(ATTACK_IMAGES_DIRECTORY);
-
-            try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
-                for (Path file : stream) {
-                    String fileName = file.getFileName().toString();
-                    String attackName = fileName.substring(0, fileName.lastIndexOf('.'));
-                    Image image = ImageIO.read(file.toFile());
-                    attackImages.put(attackName, image);
-                }
-            } catch (IOException e) {
-                System.out.println("Error loading attack images: " + e);
+            File directory = new File(ATTACK_IMAGES_DIRECTORY);
+            File[] files = directory.listFiles();
+            for (File file : files) {
+                Image image = ImageIO.read(file);
+                String fileName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+                attackAndImages.put(fileName, image);
             }
-        } catch (Exception e) {
-            System.out.println("Error loading attack images: " + e);
+        } catch (IOException e) {
+            System.err.println("Error loading attack images: " + e.getMessage());
         }
+
+        elementAndAttacks.put(Element.FIRE,
+                new Image[] { attackAndImages.get("fireball"), attackAndImages.get("inferno") });
+        elementAndAttacks.put(Element.WATER, new Image[] { attackAndImages.get("waterball"),
+                attackAndImages.get("tsunami") });
     }
 }

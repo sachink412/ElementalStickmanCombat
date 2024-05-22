@@ -15,6 +15,8 @@ public class BodyVelocity extends GameObject {
     public Vector2D velocity;
     public boolean released;
     public double easingTime;
+    public boolean restrictX = false;
+    public boolean restrictY = false;
 
     // constructor
     public BodyVelocity(String className, GameObject parent) {

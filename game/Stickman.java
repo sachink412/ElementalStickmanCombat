@@ -172,7 +172,18 @@ public class Stickman {
                 e.printStackTrace();
             }
         }
+        if (keys.one) {
+            try {
+                if (element == Element.FIRE) {
+                    skillTrigger("Fireball");
 
+                } else if (element == Element.WATER) {
+                    skillTrigger("Waterball");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (keys.up) {
             CollisionManager cm = game.gamePanel.engine.collisionManager;
             HashMap<Part, HashSet<Part>> collisionMap = cm.collisionMap;
@@ -197,6 +208,19 @@ public class Stickman {
             punchCD -= 1 / 60.0;
         }
 
+        if (fireballCD > 0) {
+            fireballCD -= 1 / 60.0;
+        }
+
+        if (waterballCD > 0) {
+            waterballCD -= 1 / 60.0;
+        }
+        if (firewaveCD > 0) {
+            firewaveCD -= 1 / 60.0;
+        }
+        if (tsunamiCD > 0) {
+            tsunamiCD -= 1 / 60.0;
+        }
         if (keys.right) {
             hrp.addChild(rightVelocity);
         } else {
@@ -253,6 +277,11 @@ public class Stickman {
         }
     }
 
+    public double fireballCD = 0;
+    public double waterballCD = 0;
+    public double firewaveCD = 0;
+    public double tsunamiCD = 0;
+
     public void skillTrigger(String skillName) throws Exception {
         if (skillName == "punch" && punchCD <= 0) {
             punchCD = .3;
@@ -267,6 +296,86 @@ public class Stickman {
             hitBox.anchored = true;
             hitBox.stickConnection = this;
             Debris.addDebris(hitBox, .1);
+        }
+
+        if (skillName == "Fireball" && fireballCD <= 0) {
+            Part fireball = (Part) Instance.create("Part", game.workspace);
+            playAnimation("attacks", 1000);
+            fireballCD = 7;
+            fireball.size = new Vector2D(100, 100);
+            fireball.position = new Vector2D(hrp.position.x, hrp.position.y);
+            fireball.setColor("Orange");
+            fireball.name = "Fireball";
+            fireball.partType = "Ellipse";
+            fireball.opacity = 0.5;
+            fireball.stickConnection = this;
+            Debris.addDebris(fireball, 2);
+            BodyVelocity fireballVelocity = (BodyVelocity) Instance.create("BodyVelocity", fireball);
+            fireballVelocity.velocity = new Vector2D(lookingRight ? 10 : -10, 0);
+            fireballVelocity.restrictY = true;
+
+        }
+        if (skillName == "Waterball" && waterballCD <= 0) {
+            waterballCD = 4;
+            Part waterball = (Part) Instance.create("Part", game.workspace);
+            playAnimation("attacks", 1000);
+            waterball.size = new Vector2D(50, 50);
+            waterball.position = new Vector2D(hrp.position.x, hrp.position.y);
+            waterball.setColor("Blue");
+            waterball.name = "Waterball";
+            waterball.partType = "Ellipse";
+            waterball.opacity = 0.5;
+            waterball.stickConnection = this;
+            Debris.addDebris(waterball, 2);
+            BodyVelocity waterballVelocity = (BodyVelocity) Instance.create("BodyVelocity", waterball);
+            waterballVelocity.velocity = new Vector2D(lookingRight ? 15 : -15, 0);
+            waterballVelocity.restrictY = true;
+        }
+
+        if (skillName == "Fire Wave" && firewaveCD <= 0) {
+            firewaveCD = 12;
+            Part fireWave = (Part) Instance.create("Part", game.workspace);
+            fireWave.size = new Vector2D(250, 85);
+            fireWave.position = new Vector2D(lookingRight ? hrp.position.x : hrp.position.x - 250, hrp.position.y);
+            fireWave.name = "fireWave";
+            fireWave.stickConnection = this;
+            Debris.addDebris(fireWave, 1.5);
+            fireWave.anchored = true;
+            new Thread(() -> {
+                try {
+                    for (int i = 0; i < 85; i++) {
+                        fireWave.size.y -= 1;
+                        Thread.sleep(120);
+                        fireWave.hitSave = new HashSet<>();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
+        if (skillName == "Tsunami" && tsunamiCD <= 0) {
+            tsunamiCD = 15;
+            for (int i = 0; i < 2; i++) {
+                Part tsunami = (Part) Instance.create("Part", game.workspace);
+                tsunami.partType = "Triangle";
+                tsunami.size = new Vector2D(300, 400);
+                tsunami.position = new Vector2D(this.hrp.position.x, this.hrp.position.y);
+                BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", game.workspace);
+                bodyVel.velocity = new Vector2D(lookingRight ? 20 : -20, 0);
+                bodyVel.restrictY = true;
+                tsunami.setColor("Blue");
+                Part tsunamiFoam = (Part) Instance.create("Part", tsunami);
+                tsunamiFoam.size = new Vector2D(100, 50);
+                tsunamiFoam.brickColor = "White";
+                tsunamiFoam.canTouch = false;
+                RigidJoint newJoint = (RigidJoint) Instance.create("RigidJoint", tsunami);
+                newJoint.part0 = tsunami;
+                newJoint.part1 = tsunamiFoam;
+                newJoint.C0 = new TFrame(new Vector2D(0, 100), 0);
+                Debris.addDebris(tsunami, 2);
+                Thread.sleep(300);
+            }
         }
     }
 
