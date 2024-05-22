@@ -10,13 +10,13 @@ public class Joint extends GameObject {
     public Part part1 = null;
     public TFrame C0 = null;
 
-    protected Joint() {
+    protected Joint(String className, GameObject parent) {
+        super(className, parent);
         this.C0 = new TFrame();
     }
 
     @Override
     public void draw(Graphics2D g) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'draw'");
+        assert true;
     }
 }

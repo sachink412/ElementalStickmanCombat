@@ -1,7 +1,6 @@
 package game.sound;
 
 import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.HashMap;
@@ -9,8 +8,7 @@ import java.util.HashMap;
 public class SoundUtility {
     private final String SOUNDS_DIRECTORY = "game/sound/sounds";
 
-    public HashMap<String, Clip> sfx = new HashMap<>();
-    public HashMap<String, Clip> music = new HashMap<>();
+    public HashMap<String, Clip> audio = new HashMap<>();
 
     public SoundUtility() {
         load();
@@ -26,10 +24,8 @@ public class SoundUtility {
                     Clip clip = AudioSystem.getClip();
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(entry.toFile());
                     clip.open(inputStream);
-                    sfx.put(soundName, clip);
-                    System.out.println("Loaded sound: " + soundName);
+                    audio.put(soundName, clip);
                 }
-
             } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
                 System.out.println("Error loading sound files: " + e.getMessage());
             }
@@ -39,10 +35,17 @@ public class SoundUtility {
     }
 
     public void play(String sound) {
-        Clip clip = sfx.get(sound);
+        Clip clip = audio.get(sound);
         if (clip != null) {
             clip.setFramePosition(0);
             clip.start();
+        }
+    }
+
+    public void stop(String sound) {
+        Clip clip = audio.get(sound);
+        if (clip != null) {
+            clip.stop();
         }
     }
 }

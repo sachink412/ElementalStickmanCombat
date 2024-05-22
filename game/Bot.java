@@ -14,6 +14,7 @@ public class Bot {
     public Color team;
     public Stickman stickman;
     public double runCD = 0;
+    public double attackCD = 0;
 
     public Bot(GamePanel gamePanel, KeyInfo keyHandler, Color team, Workspace workspace) {
         this.gamePanel = gamePanel;
@@ -52,6 +53,16 @@ public class Bot {
             runCD = .5;
         } else {
             keyHandler.q = false;
+        }
+        if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 290) {
+            keyHandler.one = true;
+        } else {
+            keyHandler.one = false;
+        }
+        if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 600) {
+            keyHandler.two = true;
+        } else {
+            keyHandler.two = false;
         }
         if (player.stickman.hrp.position.x < this.stickman.hrp.position.x && (runCD <= 0)) {
             keyHandler.left = true;

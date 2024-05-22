@@ -128,7 +128,7 @@ public class LaMeanEngine {
                     && otherPart.stickConnection != part.stickConnection) {
 
                 if (!part.hitSave.contains(otherPart)) {
-                    boolean lookingRight = part.stickConnection.lookingRight;
+                    boolean lookingRight = part.velocity.x >= 0 ? true : false;
                     otherPart.stickConnection.health -= 2;
                     new Thread(() -> {
                         BodyVelocity bodyVel = null;
@@ -148,7 +148,7 @@ public class LaMeanEngine {
                     && otherPart.stickConnection != part.stickConnection) {
 
                 if (!part.hitSave.contains(otherPart)) {
-                    boolean lookingRight = part.stickConnection.lookingRight;
+                    boolean lookingRight = part.velocity.x >= 0 ? true : false;
                     otherPart.stickConnection.health -= 15;
                     new Thread(() -> {
                         BodyVelocity bodyVel = null;
@@ -179,11 +179,31 @@ public class LaMeanEngine {
                 }
             }
 
-            if (part.name == "Waterball" && otherPart.name == "HumanoidRootPart"
+            if (part.name == "Fire Wave" && otherPart.name == "HumanoidRootPart"
                     && otherPart.stickConnection != part.stickConnection) {
 
                 if (!part.hitSave.contains(otherPart)) {
-                    boolean lookingRight = part.stickConnection.lookingRight;
+                    boolean lookingRight = part.velocity.x >= 0 ? true : false;
+                    otherPart.stickConnection.health -= .5;
+                    new Thread(() -> {
+                        BodyVelocity bodyVel = null;
+                        try {
+                            bodyVel = (BodyVelocity) Instance.create("BodyVelocity", otherPart);
+                            bodyVel.velocity = new Vector2D(lookingRight ? .5 : -.5, 0);
+                        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException
+                                | InstantiationException | IllegalAccessException | IllegalArgumentException
+                                | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                        Debris.addDebris(bodyVel, .5);
+                    }).start();
+                }
+            }
+
+            if (part.name == "Waterball" && otherPart.name == "HumanoidRootPart"
+                    && otherPart.stickConnection != part.stickConnection) {
+                if (!part.hitSave.contains(otherPart)) {
+                    boolean lookingRight = part.velocity.x >= 0 ? true : false;
                     otherPart.stickConnection.health -= 7;
                     new Thread(() -> {
                         BodyVelocity bodyVel = null;
@@ -214,6 +234,25 @@ public class LaMeanEngine {
                 }
             }
 
+            if (part.name == "Tsunami" && otherPart.name == "HumanoidRootPart"
+                    && otherPart.stickConnection != part.stickConnection) {
+                if (!part.hitSave.contains(otherPart)) {
+                    boolean lookingRight = part.velocity.x >= 0 ? true : false;
+                    otherPart.stickConnection.health -= 15;
+                    new Thread(() -> {
+                        BodyVelocity bodyVel = null;
+                        try {
+                            bodyVel = (BodyVelocity) Instance.create("BodyVelocity", otherPart);
+                            bodyVel.velocity = new Vector2D(lookingRight ? 12 : -12, 0);
+                        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException
+                                | InstantiationException | IllegalAccessException | IllegalArgumentException
+                                | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                        Debris.addDebris(bodyVel, .5);
+                    }).start();
+                }
+            }
             part.hitSave.add(otherPart);
         }
 

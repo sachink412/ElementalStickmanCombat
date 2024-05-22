@@ -184,6 +184,18 @@ public class Stickman {
                 e.printStackTrace();
             }
         }
+        if (keys.two) {
+            try {
+                if (element == Element.FIRE) {
+                    skillTrigger("Fire Wave");
+
+                } else if (element == Element.WATER) {
+                    skillTrigger("Tsunami");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (keys.up) {
             CollisionManager cm = game.gamePanel.engine.collisionManager;
             HashMap<Part, HashSet<Part>> collisionMap = cm.collisionMap;
@@ -295,6 +307,7 @@ public class Stickman {
             hitBox.opacity = 0.5;
             hitBox.anchored = true;
             hitBox.stickConnection = this;
+            SOUND.stop("punch");
             Debris.addDebris(hitBox, .1);
         }
 
@@ -313,7 +326,6 @@ public class Stickman {
             BodyVelocity fireballVelocity = (BodyVelocity) Instance.create("BodyVelocity", fireball);
             fireballVelocity.velocity = new Vector2D(lookingRight ? 10 : -10, 0);
             fireballVelocity.restrictY = true;
-
         }
         if (skillName == "Waterball" && waterballCD <= 0) {
             waterballCD = 4;
@@ -335,17 +347,19 @@ public class Stickman {
         if (skillName == "Fire Wave" && firewaveCD <= 0) {
             firewaveCD = 12;
             Part fireWave = (Part) Instance.create("Part", game.workspace);
-            fireWave.size = new Vector2D(250, 85);
-            fireWave.position = new Vector2D(lookingRight ? hrp.position.x : hrp.position.x - 250, hrp.position.y);
+            fireWave.size = new Vector2D(3000, 85);
+            fireWave.position = new Vector2D(lookingRight ? hrp.position.x : hrp.position.x - 3000, hrp.position.y);
             fireWave.name = "fireWave";
+            fireWave.setColor("Orange");
             fireWave.stickConnection = this;
             Debris.addDebris(fireWave, 1.5);
             fireWave.anchored = true;
             new Thread(() -> {
                 try {
                     for (int i = 0; i < 85; i++) {
-                        fireWave.size.y -= 1;
-                        Thread.sleep(120);
+                        fireWave.size.sub(new Vector2D(0, 1));
+                        fireWave.position.add(new Vector2D(0, 0.5));
+                        Thread.sleep(15);
                         fireWave.hitSave = new HashSet<>();
                     }
                 } catch (Exception e) {
@@ -361,20 +375,20 @@ public class Stickman {
                 tsunami.partType = "Triangle";
                 tsunami.size = new Vector2D(300, 400);
                 tsunami.position = new Vector2D(this.hrp.position.x, this.hrp.position.y);
-                BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", game.workspace);
+                BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", tsunami);
                 bodyVel.velocity = new Vector2D(lookingRight ? 20 : -20, 0);
                 bodyVel.restrictY = true;
                 tsunami.setColor("Blue");
                 Part tsunamiFoam = (Part) Instance.create("Part", tsunami);
                 tsunamiFoam.size = new Vector2D(100, 50);
-                tsunamiFoam.brickColor = "White";
+                tsunamiFoam.setColor("White");
                 tsunamiFoam.canTouch = false;
                 RigidJoint newJoint = (RigidJoint) Instance.create("RigidJoint", tsunami);
                 newJoint.part0 = tsunami;
                 newJoint.part1 = tsunamiFoam;
-                newJoint.C0 = new TFrame(new Vector2D(0, 100), 0);
+                newJoint.C0 = new TFrame(new Vector2D(50, 0), 0);
                 Debris.addDebris(tsunami, 2);
-                Thread.sleep(300);
+                Thread.sleep(50);
             }
         }
     }
