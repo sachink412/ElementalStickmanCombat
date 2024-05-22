@@ -5,7 +5,7 @@ import game.objectclasses.Part;
 import java.awt.Graphics2D;
 
 public class Joint extends GameObject {
-    
+
     public Part part0 = null;
     public Part part1 = null;
     public TFrame C0 = null;

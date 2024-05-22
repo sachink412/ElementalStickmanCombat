@@ -3,11 +3,12 @@ package game.objectclasses;
 import game.ColorUtilities;
 import game.GameObject;
 import game.Stickman;
-import game.Vector2D;
+import game.mechanics.Vector2D;
 
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.util.*;
 
 public class Part extends GameObject {
     /** PROPERTIES */
@@ -26,6 +27,7 @@ public class Part extends GameObject {
     public boolean canTouch;
     public boolean fill;
     public Stickman stickConnection;
+    public HashSet<Part> hitSave;
     // Spatial properties
     public Vector2D position;
     public double orientation;
@@ -74,6 +76,7 @@ public class Part extends GameObject {
         this.fill = true;
         this.canTouch = true;
         this.bodyVel = new Vector2D(0, 0);
+        this.hitSave = new HashSet<>();
     }
 
     public void draw(Graphics2D g) {

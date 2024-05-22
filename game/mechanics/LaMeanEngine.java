@@ -1,17 +1,23 @@
 // collision detection, movement, joints, speed calculations, etc.
 
-package game;
+package game.mechanics;
 
+import game.Game;
+import game.GameObject;
+import game.Instance;
+import game.Joint;
+import game.TFrame;
 import game.objectclasses.*;
 
 import java.util.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.lang.reflect.InvocationTargetException;
 
 public class LaMeanEngine {
     public Game game;
-    final double GRAVITY = .98 / 15;
+    final double GRAVITY = .98 / 3;
 
     public CollisionManager collisionManager = new CollisionManager();
 
@@ -23,6 +29,7 @@ public class LaMeanEngine {
         if (!game.gamePanel.isVisible()) {
             return;
         }
+
         GameObject[] descendants = game.workspace.getDescendants();
         // get all of the gameobjects in descendants that are of class RigidJoint, and
         // put them in a container
@@ -33,6 +40,7 @@ public class LaMeanEngine {
                 joints.add((RigidJoint) descendant);
             }
         }
+
         for (GameObject descendant : descendants) {
             if (descendant instanceof Part) {
                 Part part = (Part) descendant;
@@ -45,7 +53,6 @@ public class LaMeanEngine {
                     }
                 }
                 if (!part.anchored && connectedPart == null) {
-
                     Vector2D bodyVel = new Vector2D(0, 0);
                     for (GameObject child : part.getChildren()) {
                         if (child instanceof BodyVelocity) {
@@ -53,14 +60,24 @@ public class LaMeanEngine {
                         }
                     }
                     part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
-                    part.position.add(part.velocity.add(bodyVel));
+                    part.position.add(new Vector2D(part.velocity.x + bodyVel.x,
+                            part.velocity.y + bodyVel.y));
                     part.rotationalVelocity += part.rotationAcceleration;
                     part.orientation += part.rotationalVelocity;
-                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.25) - part.size.y) {
-                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.25) - part.size.y;
+                    if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.249) - part.size.y) {
+                        part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.249) - part.size.y;
                         part.velocity.y = 0;
                     }
+                    if (part.position.x < 0) {
+                        part.position.x = 0;
+                        part.velocity.x = 0;
+                    }
+                    if (part.position.x > Game.WINDOW_WIDTH - part.size.x) {
+                        part.position.x = Game.WINDOW_WIDTH - part.size.x;
+                        part.velocity.x = 0;
+                    }
                 } else if (connectedPart != null) {
+
                     TFrame C0 = connectedJoint.C0;
 
                     Vector2D partPos = new Vector2D(connectedPart.position.x + C0.positionVector.x,
@@ -88,13 +105,28 @@ public class LaMeanEngine {
 
         public HashMap<Part, HashSet<Part>> collisionMap = new HashMap<Part, HashSet<Part>>();
 
-        public Set<ArrayList<?>> getIntersections(Part part, Part otherPart) throws Exception {
-            return Intersector.getShapeIntersections(part.shape, otherPart.shape);
-        }
-
         public void onCollision(Part part, Part otherPart) throws Exception {
-            // get intersection points
+            if (part.name == "HitBox" && otherPart.name == "HumanoidRootPart"
+                    && otherPart.stickConnection != part.stickConnection) {
 
+                if (!part.hitSave.contains(otherPart)) {
+                    boolean lookingRight = part.stickConnection.lookingRight;
+                    otherPart.stickConnection.health -= 2;
+                    new Thread(() -> {
+                        BodyVelocity bodyVel = null;
+                        try {
+                            bodyVel = (BodyVelocity) Instance.create("BodyVelocity", otherPart);
+                            bodyVel.velocity = new Vector2D(lookingRight ? 5 : -5, 0);
+                        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException
+                                | InstantiationException | IllegalAccessException | IllegalArgumentException
+                                | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                        Debris.addDebris(bodyVel, .5);
+                    }).start();
+                }
+            }
+            part.hitSave.add(otherPart);
         }
 
         public void checkCollisions() throws Exception {
@@ -104,6 +136,7 @@ public class LaMeanEngine {
                     Part part = (Part) descendant;
                     for (GameObject otherDescendant : descendants) {
                         if (otherDescendant instanceof Part) {
+
                             Part otherPart = (Part) otherDescendant;
                             if (part != otherPart) {
                                 if (part.collides(otherPart)) {
@@ -124,7 +157,6 @@ public class LaMeanEngine {
                                         if (parts.size() == 0) {
                                             collisionMap.remove(part);
                                         }
-
                                     }
                                 }
                             }

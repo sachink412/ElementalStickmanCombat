@@ -1,7 +1,9 @@
 package game;
 
-import game.LaMeanEngine.CollisionManager;
 import game.map.MapUtility;
+import game.mechanics.Debris;
+import game.mechanics.LaMeanEngine;
+import game.mechanics.Vector2D;
 import game.objectclasses.Part;
 
 import java.awt.Color;
@@ -9,7 +11,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
+
+import javax.swing.JProgressBar;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -18,27 +21,24 @@ import javax.swing.JPanel;
  * played. It extends the JPanel class and implements the Runnable interface.
  */
 public class GamePanel extends JPanel implements Runnable {
-    public final int SIZE = 16;
-    public final int SCALE = 4;
-    public final int TILE_SIZE = SIZE * SCALE;
-    public final int MAX_COLUMNS = 16;
-    public final int MAX_ROWS = 9;
-    public final int SCREEN_WIDTH = TILE_SIZE * MAX_COLUMNS;
-    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_ROWS;
     private final int FPS = 60;
 
-    private final MapUtility map = new MapUtility();
+    private final MapUtility MAP = new MapUtility();
+    private final Elements ELEMENTS = new Elements();
+
     private KeyHandler keyHandler = new KeyHandler();
     public Thread gameThread;
-
     public LaMeanEngine engine;
-    Player player;
 
     private Image backgroundImage;
-
     private JLayeredPane layeredPane;
     private JPanel backgroundPanel;
-    private JPanel gameObjectsPanel;
+
+    Player player;
+    Bot bot;
+
+    private JProgressBar playerHealthBar;
+    private JProgressBar botHealthBar;
 
     public Game game;
 
@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
         layeredPane.setPreferredSize(new Dimension(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT));
         this.add(layeredPane);
 
-        backgroundImage = map.getBackgroundImage();
+        backgroundImage = MAP.getBackgroundImage();
         engine = new LaMeanEngine(this.game);
 
         // Create the background panel
@@ -67,6 +67,17 @@ public class GamePanel extends JPanel implements Runnable {
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
 
         player = new Player(this, keyHandler, Color.WHITE, game.workspace);
+        bot = new Bot(this, new KeyInfo(), Color.RED, game.workspace);
+
+        playerHealthBar = new JProgressBar(0, player.stickman.health);
+        playerHealthBar.setValue(player.stickman.health);
+        playerHealthBar.setStringPainted(true);
+        this.add(playerHealthBar);
+
+        botHealthBar = new JProgressBar(0, bot.stickman.health);
+        botHealthBar.setValue(bot.stickman.health);
+        botHealthBar.setStringPainted(true);
+        this.add(botHealthBar);
 
         try {
             Part ground = (Part) Instance.create("Part", game.workspace);
@@ -112,13 +123,15 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void startGameThread() {
+    public void start() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     public void update() {
         player.update();
+        bot.update();
+        Debris.updateDebris();
     }
 
     @Override
@@ -130,12 +143,25 @@ public class GamePanel extends JPanel implements Runnable {
         backgroundPanel.paint(g2D);
         g2D.drawImage(backgroundImage, 0, 0, null);
 
+        int healthBarWidth = Game.WINDOW_WIDTH / 4;
+        int healthBarHeight = 20;
+
+        // Player Health Bar
+        playerHealthBar.setValue(player.stickman.health);
+        playerHealthBar.setBounds(0, 0, healthBarWidth, healthBarHeight);
+        playerHealthBar.setForeground(Color.GREEN);
+        playerHealthBar.paint(g2D);
+
+        // Bot Health Bar
+        botHealthBar.setValue(bot.stickman.health);
+        botHealthBar.setBounds(Game.WINDOW_WIDTH - healthBarWidth, 0, healthBarWidth, healthBarHeight);
+        botHealthBar.setForeground(Color.RED);
+        botHealthBar.paint(g2D);
+
         GameObject[] objects = game.workspace.getDescendants();
         for (GameObject object : objects) {
             object.draw(g2D);
         }
-
-        g2D.drawString("Intersections", 100, 100);
         g2D.setColor(Color.GREEN);
     }
 }

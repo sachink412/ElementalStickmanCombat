@@ -14,5 +14,4 @@ public class FreeformJoint extends Joint {
     public FreeformJoint() {
         this(new double[] { 0, 0 }, new double[] { 0, 0 });
     }
-
 }

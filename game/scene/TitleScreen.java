@@ -1,7 +1,5 @@
 package game.scene;
 
-import game.Game;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

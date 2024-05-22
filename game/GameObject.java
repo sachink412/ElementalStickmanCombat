@@ -58,7 +58,9 @@ public abstract class GameObject {
             this.parent.children.remove(this);
         }
         this.parent = parent;
-        parent.children.add(this);
+        if (parent != null) {
+            parent.children.add(this);
+        }
     }
 
     public GameObject getParent() {

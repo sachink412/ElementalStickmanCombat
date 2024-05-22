@@ -1,7 +1,8 @@
 package game.objectclasses;
 
 import game.GameObject;
-import game.Vector2D;
+import game.mechanics.Vector2D;
+
 import java.awt.Graphics2D;
 
 // class that maintains constant velocity

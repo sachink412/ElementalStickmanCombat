@@ -1,5 +1,6 @@
 package game;
 
+import game.mechanics.LaMeanEngine;
 import game.objectclasses.Workspace;
 import game.scene.TitleScreen;
 
@@ -20,11 +21,9 @@ public class Game extends JFrame {
     public static final int WINDOW_HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment()
             .getMaximumWindowBounds().height;
 
-    public final int COLUMNS = 16;
-    public final int ROWS = 9;
-
     public TitleScreen titleScreen;
     public GamePanel gamePanel;
+
     public Workspace workspace;
     public LaMeanEngine physicsEngine;
 
@@ -49,7 +48,7 @@ public class Game extends JFrame {
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT)); // Set preferred size to maximum screen size
 
         titleScreen = new TitleScreen();
-        gamePanel = new GamePanel(this); // Pass 'this' reference to GamePanel so it can access Game object
+        gamePanel = new GamePanel(this);
         physicsEngine = new LaMeanEngine(this);
         add(titleScreen);
         refresh();
@@ -60,9 +59,8 @@ public class Game extends JFrame {
             add(gamePanel);
             refresh();
 
-            gamePanel.startGameThread();
+            gamePanel.start();
         });
-
         refresh();
     }
 

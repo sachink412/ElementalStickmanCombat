@@ -15,18 +15,31 @@ public class KeyHandler extends KeyInfo implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        System.out.println(code);
         if (code == KeyEvent.VK_W) {
             this.up = true;
         }
         if (code == KeyEvent.VK_A) {
             this.left = true;
+            this.leftRight = false;
         }
         if (code == KeyEvent.VK_S) {
             this.down = true;
         }
         if (code == KeyEvent.VK_D) {
             this.right = true;
+            this.leftRight = true;
+        }
+        if (code == KeyEvent.VK_Q) {
+            this.q = true;
+        }
+        if (code == KeyEvent.VK_1) {
+            this.one = true;
+        }
+        if (code == KeyEvent.VK_2) {
+            this.two = true;
+        }
+        if (code == KeyEvent.VK_3) {
+            this.three = true;
         }
     }
 
@@ -45,9 +58,22 @@ public class KeyHandler extends KeyInfo implements KeyListener {
         if (code == KeyEvent.VK_D) {
             this.right = false;
         }
+        if (code == KeyEvent.VK_Q) {
+            this.q = false;
+        }
+        if (code == KeyEvent.VK_1) {
+            this.one = false;
+        }
+        if (code == KeyEvent.VK_2) {
+            this.two = false;
+        }
+        if (code == KeyEvent.VK_3) {
+            this.three = false;
+        }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+        // THE keyTyped() METHOD IS NOT USED IN THIS PROGRAM
     }
 }

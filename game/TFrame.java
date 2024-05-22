@@ -1,5 +1,7 @@
 package game;
 
+import game.mechanics.Vector2D;
+
 public class TFrame {
     public Vector2D positionVector = new Vector2D();
     public double orientation = 0;
