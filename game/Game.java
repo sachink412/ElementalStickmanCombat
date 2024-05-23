@@ -62,11 +62,18 @@ public class Game extends JFrame {
         refresh();
     }
 
-    public void endGame() {
-        //TODO: IMPLEMENT THIS!
-        // Make it close out of the game (system.exit(0)), and then print to the console who won.
+    public void endGame(String winner) {
+        new Thread(() -> {
+            try {
+                System.out.println(winner + " wins!");
+                Thread.sleep(1000);
+                System.exit(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
-    
+
     public static void main(String[] args) {
         new Game();
     }

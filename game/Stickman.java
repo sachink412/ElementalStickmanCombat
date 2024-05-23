@@ -42,7 +42,7 @@ public class Stickman {
     private double punchCD = 0;
     public double speed = 1;
     private final SoundUtility SOUND = new SoundUtility();
-
+    public boolean iterating = false;
     public boolean lookingRight = true;
 
     public Stickman(Game game, Element element, String name, Color color, KeyInfo keyInfo) {
@@ -52,7 +52,6 @@ public class Stickman {
         this.model = new Model();
         this.keys = keyInfo;
 
-        // head, humanoidrootpart, torso, leftarm, rightarm, leftleg, rightleg
         try {
             try {
                 rightVelocity = (BodyVelocity) Instance.create("BodyVelocity");
@@ -145,7 +144,9 @@ public class Stickman {
             Object[] animation = entry.getValue();
             String animName = (String) animation[4];
             if (animName == animationName) {
-                it.remove();
+                if (!iterating) {
+                    it.remove();
+                }
             }
         }
     }
@@ -245,6 +246,7 @@ public class Stickman {
             stopAnimation("motion");
         }
         Iterator it = priorityMap.entrySet().iterator();
+        iterating = true;
         while (it.hasNext()) {
 
             Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) it.next();
@@ -278,7 +280,7 @@ public class Stickman {
                 animUpdate.start();
             }
         }
-
+        iterating = false;
         if (priorityMap.firstEntry().getKey() == 2) {
             currentSprite = spriteMap.get("idle")[0];
         }
@@ -357,9 +359,11 @@ public class Stickman {
                         fireWave.position.add(new Vector2D(0, 0.5));
                         fireWave.opacity -= 1 / 85.0;
                         Thread.sleep(15);
-                        if (i%3 == 0) {
-                        fireWave.hitSave = new HashSet<>();
-                        }{}
+                        if (i % 3 == 0) {
+                            fireWave.hitSave = new HashSet<>();
+                        }
+                        {
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -369,52 +373,51 @@ public class Stickman {
 
         if (skillName == "Tsunami" && tsunamiCD <= 0) {
             tsunamiCD = 15;
-            new Thread(() ->{
-            for (int i = 0; i <= 2; i++) {
-                try {
-                playAnimation("attacks", 1000);
-                Part tsunami = (Part) Instance.create("Part", game.workspace);
-                tsunami.partType = "Triangle";
-                tsunami.size = new Vector2D(300, 400);
-                tsunami.name = "Tsunami";
-                tsunami.position = new Vector2D(this.hrp.position.x, this.hrp.position.y);
-                tsunami.stickConnection = this;
-                BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", tsunami);
-                bodyVel.velocity = new Vector2D(lookingRight ? 20 : -20, 0);
-                bodyVel.restrictY = true;
-                tsunami.setColor("Blue");
-                Part tsunamiFoam = (Part) Instance.create("Part", tsunami);
-                tsunamiFoam.size = new Vector2D(140, 5);
-                tsunamiFoam.setColor("White");
-                tsunamiFoam.canTouch = false;
-                RigidJoint newJoint = (RigidJoint) Instance.create("RigidJoint", tsunami);
-                newJoint.part0 = tsunami;
-                newJoint.part1 = tsunamiFoam;
-                newJoint.C0 = new TFrame(new Vector2D(75, 10), 0);
-                Debris.addDebris(tsunami, 2);
-                Thread.sleep(300);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            new Thread(() -> {
+                for (int i = 0; i <= 2; i++) {
+                    try {
+                        playAnimation("attacks", 1000);
+                        Part tsunami = (Part) Instance.create("Part", game.workspace);
+                        tsunami.partType = "Triangle";
+                        tsunami.size = new Vector2D(300, 400);
+                        tsunami.name = "Tsunami";
+                        tsunami.position = new Vector2D(this.hrp.position.x, this.hrp.position.y);
+                        tsunami.stickConnection = this;
+                        BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", tsunami);
+                        bodyVel.velocity = new Vector2D(lookingRight ? 20 : -20, 0);
+                        bodyVel.restrictY = true;
+                        tsunami.setColor("Blue");
+                        Part tsunamiFoam = (Part) Instance.create("Part", tsunami);
+                        tsunamiFoam.size = new Vector2D(140, 5);
+                        tsunamiFoam.setColor("White");
+                        tsunamiFoam.canTouch = false;
+                        RigidJoint newJoint = (RigidJoint) Instance.create("RigidJoint", tsunami);
+                        newJoint.part0 = tsunami;
+                        newJoint.part1 = tsunamiFoam;
+                        newJoint.C0 = new TFrame(new Vector2D(75, 10), 0);
+                        Debris.addDebris(tsunami, 2);
+                        Thread.sleep(300);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }
-            ).start();
+            }).start();
         }
     }
-    
-    public static BufferedImage dye(BufferedImage image, Color color)
-    {
+
+    public static BufferedImage dye(BufferedImage image, Color color) {
         int w = image.getWidth();
         int h = image.getHeight();
-        BufferedImage dyed = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        BufferedImage dyed = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = dyed.createGraphics();
-        g.drawImage(image, 0,0, null);
+        g.drawImage(image, 0, 0, null);
         g.setComposite(AlphaComposite.SrcAtop);
         g.setColor(color);
-        g.fillRect(0,0,w,h);
+        g.fillRect(0, 0, w, h);
         g.dispose();
         return dyed;
     }
+
     public void draw(Graphics2D g) {
         BufferedImage pasteSprite = currentSprite;
         if (keys.leftRight) {

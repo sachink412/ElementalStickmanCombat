@@ -137,14 +137,17 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         if (player.stickman.health < 0 || bot.stickman.health < 0) {
-            game.endGame();
+            if (player.stickman.health < 0) {
+                game.endGame("Bot");
+            } else {
+                game.endGame("Player");
+            }
         }
 
         player.update();
         bot.update();
         Debris.updateDebris();
     }
-
 
     @Override
     public void paintComponent(Graphics g) {
