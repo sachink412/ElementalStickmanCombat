@@ -134,7 +134,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
+    public boolean endedGame = false;
     public void update() {
         if (player.stickman.health < 0 || bot.stickman.health < 0) {
             if (player.stickman.health < 0) {

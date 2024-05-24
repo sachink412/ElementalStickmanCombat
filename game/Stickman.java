@@ -116,6 +116,7 @@ public class Stickman {
 
     public void playAnimation(String animationName, double length) {
         Iterator it = priorityMap.entrySet().iterator();
+        iterating = true;
         while (it.hasNext()) {
             Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) it.next();
             Object[] animation = entry.getValue();
@@ -124,6 +125,7 @@ public class Stickman {
                 return;
             }
         }
+        iterating = false;
         BufferedImage[] animation = spriteMap.get(animationName);
         int animPriority = 0;
         if (animationName.equals("attacks")) {
@@ -139,6 +141,7 @@ public class Stickman {
 
     public synchronized void stopAnimation(String animationName) {
         Iterator it = priorityMap.entrySet().iterator();
+        iterating = true;
         while (it.hasNext()) {
             Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) it.next();
             Object[] animation = entry.getValue();
@@ -149,6 +152,7 @@ public class Stickman {
                 }
             }
         }
+        iterating = false;
     }
 
     public BufferedImage flipHorizontally(BufferedImage image) {
