@@ -68,18 +68,12 @@ public class Game extends JFrame {
         new Thread(() -> {
             try {
                 System.out.println(winner + " wins!");
-                JPanel panel = new JPanel();
-                panel.setLayout(new BorderLayout());
-                JLabel label = new JLabel(winner + " wins!");
-                label.setFont(new Font("Arial", Font.PLAIN, 50));
-                panel.add(label, BorderLayout.CENTER);
-                add(panel);
                 refresh();
-                Thread.sleep(5000);
-                remove(panel);
-                remove(gamePanel);
-                gamePanel = new GamePanel(this);
-                add(titleScreen);
+
+                Thread.sleep(3000);
+                System.exit(0);
+                refresh();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

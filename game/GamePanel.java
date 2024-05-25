@@ -16,6 +16,7 @@ import java.awt.Image;
 
 import javax.swing.JProgressBar;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -37,7 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
     private Image backgroundImage;
     private JLayeredPane layeredPane;
     private JPanel backgroundPanel;
-
+    private JPanel gameOverPanel;
+    private JLabel gameOverLabel;
+    private JLabel winnerLabel;
     Player player;
     Bot bot;
 
@@ -69,6 +72,24 @@ public class GamePanel extends JPanel implements Runnable {
         backgroundPanel.setBounds(0, 0, Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT);
         backgroundPanel.setOpaque(false);
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
+
+        // create the game over panel
+        gameOverPanel = new JPanel();
+        gameOverPanel.setBounds(0, 0, Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT);
+        gameOverPanel.setOpaque(false);
+        gameOverPanel.setVisible(false);
+        layeredPane.add(gameOverPanel, JLayeredPane.PALETTE_LAYER);
+        
+        gameOverLabel = new JLabel();
+        gameOverLabel.setFont(new Font("Verdana", Font.BOLD, 50));
+        gameOverLabel.setForeground(Color.WHITE);
+        gameOverPanel.add(gameOverLabel);
+
+        winnerLabel = new JLabel();
+        winnerLabel.setFont(new Font("Verdana", Font.BOLD, 50));
+        winnerLabel.setForeground(Color.WHITE);
+        winnerLabel.setBounds(0, 0, Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT);
+        gameOverPanel.add(winnerLabel);
 
         player = new Player(this, keyHandler, Color.BLACK, game.workspace);
         bot = new Bot(this, new KeyInfo(), Color.WHITE, game.workspace);
@@ -136,6 +157,7 @@ public class GamePanel extends JPanel implements Runnable {
     public boolean endedGame = false;
     public void update() {
         if (!endedGame) {
+
             if (player.stickman.health < 0 || bot.stickman.health < 0) {
                 if (player.stickman.health < 0) {
                     game.endGame("Bot");
@@ -155,7 +177,19 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         this.requestFocusInWindow();
         Graphics2D g2D = (Graphics2D) g;
+        if (endedGame) {
+            gameOverPanel.setVisible(true);
+            gameOverLabel.setText("Game Over!");
 
+            if (player.stickman.health < 0) {
+                winnerLabel.setText(" Bot Wins!");
+            } else {
+                winnerLabel.setText(" Player Wins!");
+            }
+
+
+            return;
+        }
         backgroundPanel.paint(g2D);
         g2D.drawImage(backgroundImage, 0, 0, null);
 
