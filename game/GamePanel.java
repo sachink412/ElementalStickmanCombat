@@ -16,7 +16,6 @@ import java.awt.Image;
 
 import javax.swing.JProgressBar;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -136,14 +135,16 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public boolean endedGame = false;
     public void update() {
-        if (player.stickman.health < 0 || bot.stickman.health < 0) {
-            if (player.stickman.health < 0) {
-                game.endGame("Bot");
-            } else {
-                game.endGame("Player");
+        if (!endedGame) {
+            if (player.stickman.health < 0 || bot.stickman.health < 0) {
+                if (player.stickman.health < 0) {
+                    game.endGame("Bot");
+                } else {
+                    game.endGame("Player");
+                }
+                endedGame = true;
             }
         }
-
         player.update();
         bot.update();
         Debris.updateDebris();

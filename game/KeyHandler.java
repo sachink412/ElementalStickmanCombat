@@ -74,6 +74,6 @@ public class KeyHandler extends KeyInfo implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // THE keyTyped() METHOD IS NOT USED IN THIS PROGRAM
+        // The keyTyped() method is not used in this program.
     }
 }

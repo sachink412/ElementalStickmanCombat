@@ -4,9 +4,11 @@ import game.mechanics.LaMeanEngine;
 import game.objectclasses.Workspace;
 import game.scene.TitleScreen;
 
+import java.awt.*;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * The main class representing the game.
@@ -66,8 +68,18 @@ public class Game extends JFrame {
         new Thread(() -> {
             try {
                 System.out.println(winner + " wins!");
-                Thread.sleep(1000);
-                System.exit(0);
+                JPanel panel = new JPanel();
+                panel.setLayout(new BorderLayout());
+                JLabel label = new JLabel(winner + " wins!");
+                label.setFont(new Font("Arial", Font.PLAIN, 50));
+                panel.add(label, BorderLayout.CENTER);
+                add(panel);
+                refresh();
+                Thread.sleep(5000);
+                remove(panel);
+                remove(gamePanel);
+                gamePanel = new GamePanel(this);
+                add(titleScreen);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

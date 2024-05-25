@@ -1,14 +1,13 @@
 package game.mechanics;
 
-import java.awt.geom.*;
-
 import game.Game;
 import game.GameObject;
 import game.objectclasses.*;
+
 import java.util.*;
+import java.awt.geom.*;
 
 public class Hitbox {
-
     public double x;
     public double y;
     public double width;
@@ -23,16 +22,16 @@ public class Hitbox {
     }
 
     public ArrayList<Part> getParts() {
-
         Area hitbox = new Area(new Rectangle2D.Double(x, y, width, height));
         ArrayList<Part> parts = new ArrayList<Part>();
+        
         for (GameObject part : game.workspace.getDescendants()) {
             Part partA = (Part) part;
             if (partA.shape.intersects(hitbox.getBounds2D())) {
                 parts.add(partA);
             }
-
         }
+
         return parts;
     }
 }

@@ -24,7 +24,7 @@ public class Bot {
         Element randomElement = elements[(int) (Math.random() * elements.length)];
         this.stickman = new Stickman(gamePanel.game, randomElement, "Bot", team, keyHandler);
         keyHandler.leftRight = false;
-        this.stickman.hrp.position = new Vector2D(Game.WINDOW_WIDTH - 400, 100);
+        this.stickman.humanoidRootPart.position = new Vector2D(Game.WINDOW_WIDTH - 400, 100);
         this.stickman.speed = .3;
     }
 
@@ -36,40 +36,40 @@ public class Bot {
 
     public void trackPlayer() {
         Player player = gamePanel.player;
-        if (player.stickman.hrp.position.x < this.stickman.hrp.position.x) {
+        if (player.stickman.humanoidRootPart.position.x < this.stickman.humanoidRootPart.position.x) {
             keyHandler.leftRight = false;
         } else {
             keyHandler.leftRight = true;
         }
 
-        if (player.stickman.hrp.position.y < this.stickman.hrp.position.y) {
+        if (player.stickman.humanoidRootPart.position.y < this.stickman.humanoidRootPart.position.y) {
             keyHandler.up = true;
         } else {
             keyHandler.up = false;
         }
 
-        if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 60) {
+        if (player.stickman.humanoidRootPart.position.distanceFrom(this.stickman.humanoidRootPart.position) < 60) {
             keyHandler.q = true;
             runCD = .8;
         } else {
             keyHandler.q = false;
         }
-        if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 290) {
+        if (player.stickman.humanoidRootPart.position.distanceFrom(this.stickman.humanoidRootPart.position) < 290) {
             keyHandler.one = true;
         } else {
             keyHandler.one = false;
         }
-        if (player.stickman.hrp.position.distanceFrom(this.stickman.hrp.position) < 600) {
+        if (player.stickman.humanoidRootPart.position.distanceFrom(this.stickman.humanoidRootPart.position) < 600) {
             keyHandler.two = true;
         } else {
             keyHandler.two = false;
         }
-        if (player.stickman.hrp.position.x < this.stickman.hrp.position.x && (runCD <= 0)) {
+        if (player.stickman.humanoidRootPart.position.x < this.stickman.humanoidRootPart.position.x && (runCD <= 0)) {
             keyHandler.left = true;
         } else {
             keyHandler.left = false;
         }
-        if (player.stickman.hrp.position.x > this.stickman.hrp.position.x && (runCD <= 0)) {
+        if (player.stickman.humanoidRootPart.position.x > this.stickman.humanoidRootPart.position.x && (runCD <= 0)) {
             keyHandler.right = true;
         } else {
             keyHandler.right = false;
