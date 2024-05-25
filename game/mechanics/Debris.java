@@ -10,7 +10,6 @@ public class Debris {
     public static boolean iterating = false;
 
     public Debris() {
-
     }
 
     public static synchronized void addDebris(GameObject part, double time) {
@@ -24,15 +23,15 @@ public class Debris {
     }
 
     public static synchronized void updateDebris() {
-        Iterator it = setDeletion.entrySet().iterator();
+        Iterator iterator = setDeletion.entrySet().iterator();
         iterating = true;
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
             GameObject part = (GameObject) pair.getKey();
             double time = (double) pair.getValue();
             if (time <= 0) {
                 part.setParent(null);
-                it.remove();
+                iterator.remove();
             } else {
                 setDeletion.put(part, time - 1 / 60.0);
             }

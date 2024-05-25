@@ -1,5 +1,3 @@
-// collision detection, movement, joints, speed calculations, etc.
-
 package game.mechanics;
 
 import game.Game;
@@ -11,10 +9,9 @@ import game.objectclasses.*;
 
 import java.util.*;
 import java.awt.*;
-// import java.awt.geom.Line2D;
-// import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 
+// Physics engine used for collision detection, movement, joints, speed calculations, etc.
 public class LaMeanEngine {
     public Game game;
     final double GRAVITY = .98 / 3;
@@ -31,8 +28,6 @@ public class LaMeanEngine {
         }
 
         GameObject[] descendants = game.workspace.getDescendants();
-        // get all of the gameobjects in descendants that are of class RigidJoint, and
-        // put them in a container
 
         ArrayList<RigidJoint> joints = new ArrayList<RigidJoint>();
         for (GameObject descendant : descendants) {
@@ -52,6 +47,7 @@ public class LaMeanEngine {
                         connectedJoint = joint;
                     }
                 }
+
                 if (!part.anchored && connectedPart == null) {
                     Vector2D bodyVel = new Vector2D(0, 0);
                     boolean restrictX = false;
@@ -59,34 +55,40 @@ public class LaMeanEngine {
                     for (GameObject child : part.getChildren()) {
                         if (child instanceof BodyVelocity) {
                             try {
-                            bodyVel.add(((BodyVelocity) child).velocity);
-                            if (((BodyVelocity) child).restrictX) {
-                                restrictX = true;
+                                bodyVel.add(((BodyVelocity) child).velocity);
+                                if (((BodyVelocity) child).restrictX) {
+                                    restrictX = true;
+                                }
+                                if (((BodyVelocity) child).restrictY) {
+                                    restrictY = true;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Could not get velocity.");
                             }
-                            if (((BodyVelocity) child).restrictY) {
-                                restrictY = true;
-                            }
-                        } catch (Exception e){
-                            System.out.println("Could not get velocity.");
-                        }
                         }
                     }
+
                     part.velocity.add(new Vector2D(part.acceleration.x, part.acceleration.y + GRAVITY));
                     double xVel = part.velocity.x + bodyVel.x;
                     double yVel = part.velocity.y + bodyVel.y;
+
                     if (restrictX) {
                         xVel *= 0;
                     }
+
                     if (restrictY) {
                         yVel *= 0;
                     }
+
                     part.position.add(new Vector2D(xVel, yVel));
                     part.rotationalVelocity += part.rotationAcceleration;
                     part.orientation += part.rotationalVelocity;
+
                     if (part.position.y > (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.245) - part.size.y) {
                         part.position.y = (Game.WINDOW_HEIGHT) - (Game.WINDOW_HEIGHT * 0.245) - part.size.y;
                         part.velocity.y = 0;
                     }
+
                     if (part.name != "Tsunami") {
                         if (part.position.x < 0) {
                             part.position.x = 0;
@@ -98,7 +100,6 @@ public class LaMeanEngine {
                         }
                     }
                 } else if (connectedPart != null) {
-
                     TFrame C0 = connectedJoint.C0;
 
                     Vector2D partPos = new Vector2D(connectedPart.position.x + C0.positionVector.x,
@@ -107,11 +108,9 @@ public class LaMeanEngine {
 
                     part.position = partPos;
                     part.orientation = partOri;
-
                 }
             }
         }
-
         try {
             collisionManager.checkCollisions();
         } catch (Exception e) {
@@ -147,6 +146,7 @@ public class LaMeanEngine {
                     }).start();
                 }
             }
+
             if (part.name == "Fireball" && otherPart.name == "HumanoidRootPart"
                     && otherPart.stickConnection != part.stickConnection) {
 
@@ -163,9 +163,11 @@ public class LaMeanEngine {
                                 | InvocationTargetException e) {
                             e.printStackTrace();
                         }
+
                         Debris.addDebris(bodyVel, .7);
                         part.anchored = true;
                         part.canTouch = false;
+
                         Debris.addDebris(part, 1);
                         new Thread(() -> {
                             try {
@@ -205,6 +207,7 @@ public class LaMeanEngine {
 
             if (part.name == "Waterball" && otherPart.name == "HumanoidRootPart"
                     && otherPart.stickConnection != part.stickConnection) {
+
                 if (!part.hitSave.contains(otherPart)) {
                     boolean lookingRight = part.velocity.x >= 0 ? true : false;
                     otherPart.stickConnection.health -= 7;
@@ -218,6 +221,7 @@ public class LaMeanEngine {
                                 | InvocationTargetException e) {
                             e.printStackTrace();
                         }
+
                         Debris.addDebris(bodyVel, .5);
                         part.anchored = true;
                         part.canTouch = false;
@@ -239,6 +243,7 @@ public class LaMeanEngine {
 
             if (part.name == "Tsunami" && otherPart.name == "HumanoidRootPart"
                     && otherPart.stickConnection != part.stickConnection) {
+
                 if (!part.hitSave.contains(otherPart)) {
                     boolean lookingRight = part.velocity.x >= 0 ? true : false;
                     otherPart.stickConnection.health -= 10;

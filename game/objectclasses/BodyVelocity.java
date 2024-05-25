@@ -5,20 +5,19 @@ import game.mechanics.Vector2D;
 
 import java.awt.Graphics2D;
 
-// class that maintains constant velocity
-// for a body in the game
+// class that maintains constant velocity for a body in the game
 // it can be released, with an easing time to smoothly stop the body
 // it can be set to a new velocity, with an easing time to smoothly change the velocity
 // this object will be children of a part
 public class BodyVelocity extends GameObject {
-    // fields
+    // Fields
     public Vector2D velocity;
     public boolean released;
     public double easingTime;
     public boolean restrictX = false;
     public boolean restrictY = false;
 
-    // constructor
+    // Constructor
     public BodyVelocity(String className, GameObject parent) {
         super(className, parent);
         this.velocity = new Vector2D(0, 0);

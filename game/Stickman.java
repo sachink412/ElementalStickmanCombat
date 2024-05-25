@@ -32,7 +32,7 @@ public class Stickman {
     private HashMap<String, BufferedImage[]> spriteMap = new HashMap<String, BufferedImage[]>();
     private List<BufferedImage> spriteList = new ArrayList<BufferedImage>();
     private BufferedImage currentSprite;
-    public Part humanoidRootPart;
+    public Part hrp;
     private boolean moving = false;
     private boolean attacking = false;
     public BodyVelocity rightVelocity;
@@ -62,6 +62,7 @@ public class Stickman {
                 e.printStackTrace();
                 return;
             }
+
             Part hrp = (Part) Instance.create("Part", game.workspace);
             hrp.size = new Vector2D(83, 100);
             hrp.position = new Vector2D(400, 100);
@@ -70,7 +71,7 @@ public class Stickman {
             hrp.partType = "Rectangle";
             hrp.opacity = 0;
             hrp.stickConnection = this;
-            this.humanoidRootPart = hrp;
+            this.hrp = hrp;
             this.game = game;
             loadSprites();
             playAnimation("idle", 1000);
@@ -117,6 +118,7 @@ public class Stickman {
     public void playAnimation(String animationName, double length) {
         Iterator it = priorityMap.entrySet().iterator();
         iterating = true;
+
         while (it.hasNext()) {
             Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) it.next();
             Object[] animation = entry.getValue();
@@ -125,33 +127,38 @@ public class Stickman {
                 return;
             }
         }
+
         iterating = false;
         BufferedImage[] animation = spriteMap.get(animationName);
-        int animPriority = 0;
+        int animationPriority = 0;
+
         if (animationName.equals("attacks")) {
-            animPriority = 0;
+            animationPriority = 0;
         } else if (animationName.equals("motion")) {
-            animPriority = 1;
+            animationPriority = 1;
         } else {
-            animPriority = 2;
+            animationPriority = 2;
         }
-        priorityMap.put(animPriority, new Object[] { animation, length, 0, .05, animationName });
+
+        priorityMap.put(animationPriority, new Object[] { animation, length, 0, .05, animationName });
         currentSprite = animation[0];
     }
 
     public synchronized void stopAnimation(String animationName) {
-        Iterator it = priorityMap.entrySet().iterator();
+        Iterator iterator = priorityMap.entrySet().iterator();
         iterating = true;
-        while (it.hasNext()) {
-            Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) it.next();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) iterator.next();
             Object[] animation = entry.getValue();
             String animName = (String) animation[4];
             if (animName == animationName) {
                 if (!iterating) {
-                    it.remove();
+                    iterator.remove();
                 }
             }
         }
+
         iterating = false;
     }
 
@@ -163,7 +170,6 @@ public class Stickman {
     }
 
     public synchronized void update() {
-
         if (keys.q) {
             try {
                 SOUND.play("punch");
@@ -172,6 +178,7 @@ public class Stickman {
                 e.printStackTrace();
             }
         }
+
         if (keys.one) {
             try {
                 if (element == Element.FIRE) {
@@ -184,6 +191,7 @@ public class Stickman {
                 e.printStackTrace();
             }
         }
+
         if (keys.two) {
             try {
                 if (element == Element.FIRE) {
@@ -196,15 +204,16 @@ public class Stickman {
                 e.printStackTrace();
             }
         }
+
         if (keys.up) {
             CollisionManager cm = game.gamePanel.engine.collisionManager;
             HashMap<Part, HashSet<Part>> collisionMap = cm.collisionMap;
-            if (collisionMap.containsKey(humanoidRootPart)) {
-                HashSet<Part> collidingParts = collisionMap.get(humanoidRootPart);
+            if (collisionMap.containsKey(hrp)) {
+                HashSet<Part> collidingParts = collisionMap.get(hrp);
                 for (Part part : collidingParts) {
                     if (part.name == "Ground") {
                         if (jumpCD <= 0) {
-                            humanoidRootPart.velocity = humanoidRootPart.velocity.sub(new Vector2D(0, 13));
+                            hrp.velocity = hrp.velocity.sub(new Vector2D(0, 13));
                             jumpCD = .2;
                         }
                     }
@@ -227,45 +236,51 @@ public class Stickman {
         if (waterballCD > 0) {
             waterballCD -= 1 / 60.0;
         }
+
         if (firewaveCD > 0) {
             firewaveCD -= 1 / 60.0;
         }
+
         if (tsunamiCD > 0) {
             tsunamiCD -= 1 / 60.0;
         }
+
         if (keys.right) {
-            humanoidRootPart.addChild(rightVelocity);
+            hrp.addChild(rightVelocity);
         } else {
-            humanoidRootPart.removeChild(rightVelocity);
+            hrp.removeChild(rightVelocity);
         }
 
         if (keys.left) {
-            humanoidRootPart.addChild(leftVelocity);
+            hrp.addChild(leftVelocity);
         } else {
-            humanoidRootPart.removeChild(leftVelocity);
+            hrp.removeChild(leftVelocity);
         }
+
         if (keys.right || keys.left) {
             playAnimation("motion", 1000);
         } else {
             stopAnimation("motion");
         }
-        Iterator it = priorityMap.entrySet().iterator();
-        iterating = true;
-        while (it.hasNext()) {
 
-            Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) it.next();
+        Iterator iterator = priorityMap.entrySet().iterator();
+        iterating = true;
+
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, Object[]> entry = (Map.Entry<Integer, Object[]>) iterator.next();
             Object[] animation = entry.getValue();
             BufferedImage[] frames = (BufferedImage[]) animation[0];
             double length = (double) animation[1];
             int currentFrame = (int) animation[2];
             double frameRate = (double) animation[3];
             String animationName = (String) animation[4];
+
             if ((currentFrame >= frames.length) && (frames.length < 1000)) {
                 if (animationName == "attacks") {
-                    it.remove();
+                    iterator.remove();
                 } else {
                     if (animationName == "motion") {
-                        it.remove();
+                        iterator.remove();
                     }
                 }
             } else {
@@ -284,12 +299,14 @@ public class Stickman {
                 animUpdate.start();
             }
         }
+
         iterating = false;
         if (priorityMap.firstEntry().getKey() == 2) {
             currentSprite = spriteMap.get("idle")[0];
         }
     }
 
+    // Cooldowns
     public double fireballCD = 0;
     public double waterballCD = 0;
     public double firewaveCD = 0;
@@ -301,7 +318,7 @@ public class Stickman {
             playAnimation("attacks", 1000);
             Part hitBox = (Part) Instance.create("Part", game.workspace);
             hitBox.size = new Vector2D(75, 75);
-            hitBox.position = new Vector2D(humanoidRootPart.position.x, humanoidRootPart.position.y);
+            hitBox.position = new Vector2D(hrp.position.x, hrp.position.y);
             hitBox.setColor("Red");
             hitBox.name = "HitBox";
             hitBox.partType = "Rectangle";
@@ -317,7 +334,7 @@ public class Stickman {
             playAnimation("attacks", 1000);
             fireballCD = 7;
             fireball.size = new Vector2D(100, 100);
-            fireball.position = new Vector2D(humanoidRootPart.position.x, humanoidRootPart.position.y);
+            fireball.position = new Vector2D(hrp.position.x, hrp.position.y);
             fireball.setColor("Orange");
             fireball.name = "Fireball";
             fireball.partType = "Ellipse";
@@ -328,12 +345,13 @@ public class Stickman {
             fireballVelocity.velocity = new Vector2D(lookingRight ? 10 : -10, 0);
             fireballVelocity.restrictY = true;
         }
+
         if (skillName == "Waterball" && waterballCD <= 0) {
             waterballCD = 4;
             Part waterball = (Part) Instance.create("Part", game.workspace);
             playAnimation("attacks", 1000);
             waterball.size = new Vector2D(50, 50);
-            waterball.position = new Vector2D(humanoidRootPart.position.x, humanoidRootPart.position.y);
+            waterball.position = new Vector2D(hrp.position.x, hrp.position.y);
             waterball.setColor("Blue");
             waterball.name = "Waterball";
             waterball.partType = "Ellipse";
@@ -350,7 +368,9 @@ public class Stickman {
             playAnimation("attacks", 1000);
             Part fireWave = (Part) Instance.create("Part", game.workspace);
             fireWave.size = new Vector2D(3000, 85);
-            fireWave.position = new Vector2D(lookingRight ? humanoidRootPart.position.x : humanoidRootPart.position.x - 3000, humanoidRootPart.position.y);
+            fireWave.position = new Vector2D(
+                    lookingRight ? hrp.position.x : hrp.position.x - 3000,
+                    hrp.position.y);
             fireWave.name = "fireWave";
             fireWave.setColor("Orange");
             fireWave.stickConnection = this;
@@ -385,7 +405,8 @@ public class Stickman {
                         tsunami.partType = "Triangle";
                         tsunami.size = new Vector2D(300, 400);
                         tsunami.name = "Tsunami";
-                        tsunami.position = new Vector2D(this.humanoidRootPart.position.x, this.humanoidRootPart.position.y);
+                        tsunami.position = new Vector2D(this.hrp.position.x,
+                                this.hrp.position.y);
                         tsunami.stickConnection = this;
                         BodyVelocity bodyVel = (BodyVelocity) Instance.create("BodyVelocity", tsunami);
                         bodyVel.velocity = new Vector2D(lookingRight ? 20 : -20, 0);
@@ -433,6 +454,6 @@ public class Stickman {
         if (this.color != Color.BLACK) {
             pasteSprite = dye(pasteSprite, color);
         }
-        g.drawImage(pasteSprite, (int) humanoidRootPart.position.x, (int) humanoidRootPart.position.y + 5, null);
+        g.drawImage(pasteSprite, (int) hrp.position.x, (int) hrp.position.y + 5, null);
     }
 }

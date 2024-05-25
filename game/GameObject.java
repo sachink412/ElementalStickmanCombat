@@ -4,13 +4,13 @@ import java.awt.Graphics2D;
 import java.util.*;
 
 public abstract class GameObject {
-    // properties
+    // Properties
     public String name;
     public String className;
     protected HashSet<GameObject> children;
     protected GameObject parent;
 
-    // constructors
+    // Constructors
     public GameObject() {
         super();
         this.name = "GameObject";

@@ -4,11 +4,9 @@ import game.mechanics.LaMeanEngine;
 import game.objectclasses.Workspace;
 import game.scene.TitleScreen;
 
-import java.awt.*;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
-import javax.swing.*;
 
 /**
  * The main class representing the game.

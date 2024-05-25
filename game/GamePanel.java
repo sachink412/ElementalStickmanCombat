@@ -79,7 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameOverPanel.setOpaque(false);
         gameOverPanel.setVisible(false);
         layeredPane.add(gameOverPanel, JLayeredPane.PALETTE_LAYER);
-        
+
         gameOverLabel = new JLabel();
         gameOverLabel.setFont(new Font("Verdana", Font.BOLD, 50));
         gameOverLabel.setForeground(Color.WHITE);
@@ -119,6 +119,8 @@ public class GamePanel extends JPanel implements Runnable {
         soundUtility.play("bgm");
     }
 
+    // The run method is called when the game thread is started, and it is used to
+    // update the game state and repaint the game.
     @Override
     public void run() {
         double drawInterval = 1e9 / FPS;
@@ -154,10 +156,11 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
     public boolean endedGame = false;
+
     public void update() {
         if (!endedGame) {
-
             if (player.stickman.health < 0 || bot.stickman.health < 0) {
                 if (player.stickman.health < 0) {
                     game.endGame("Bot");
@@ -167,6 +170,7 @@ public class GamePanel extends JPanel implements Runnable {
                 endedGame = true;
             }
         }
+
         player.update();
         bot.update();
         Debris.updateDebris();
@@ -176,7 +180,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         this.requestFocusInWindow();
+
         Graphics2D g2D = (Graphics2D) g;
+
         if (endedGame) {
             gameOverPanel.setVisible(true);
             gameOverLabel.setText("Game Over!");
@@ -187,9 +193,9 @@ public class GamePanel extends JPanel implements Runnable {
                 winnerLabel.setText(" Player Wins!");
             }
 
-
             return;
         }
+
         backgroundPanel.paint(g2D);
         g2D.drawImage(backgroundImage, 0, 0, null);
 

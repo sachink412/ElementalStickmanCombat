@@ -8,5 +8,4 @@ public class RigidJoint extends Joint {
     public RigidJoint(String className, GameObject parent) {
         super(className, parent);
     }
-
 }

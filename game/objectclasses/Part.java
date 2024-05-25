@@ -28,6 +28,7 @@ public class Part extends GameObject {
     public boolean fill;
     public Stickman stickConnection;
     public HashSet<Part> hitSave;
+
     // Spatial properties
     public Vector2D position;
     public double orientation;
@@ -89,6 +90,7 @@ public class Part extends GameObject {
         Color colorAlpha = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(),
                 (int) (this.opacity * 255));
         g.setColor(colorAlpha);
+
         // If the part is a rectangle
         if (this.partType.equals("Rectangle")) {
             if (this.shape.getClass() != Rectangle.class) {
